@@ -1,0 +1,49 @@
+package com.vk.util;
+
+import com.vk.model.InspectionRecord;
+import com.vk.response.Result;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import javax.xml.soap.Text;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by weijin on 2018/7/7.
+ */
+public class ExportXmlUtil {
+
+    public static Result InspectionRecordExport(List<InspectionRecord> list, String dir, String path){
+        List rowName = new ArrayList();
+        rowName.add("河道名称");
+        rowName.add("河道编号");
+        rowName.add("标题");
+        rowName.add("所属乡镇");
+        rowName.add("巡河地点");
+        rowName.add("初步评定");
+        rowName.add("河道描述");
+        rowName.add("总分");
+        rowName.add("问题创建时间");
+        rowName.add("问题发现人");
+        for(InspectionRecord record:list){
+            if(record.getFirstAssess() == 0 ){
+                record.setFirstAssessCn("优秀");
+            }else if(record.getFirstAssess() == 1){
+                record.setFirstAssessCn("一般");
+            }else{
+                record.setFirstAssessCn("较差");
+            }
+
+            if(TextUtil.integerNotEmpty(record.getScore())){
+                record.setScoreCn(record.getScore()+"分");
+            }
+
+            Date createTime =record.getCreateTime();
+            record.setCreateTimeCn(DateUtil.fmPattern(createTime,"yyyy-MM-dd"));
+        }
+        String[] cellRows = {"riverName","riverNo","title","towns","address","firstAssessCn","context","scoreCn","createTimeCn","creator"};
+        return PoiExportUtil.poiExport("河流问题",rowName,list,cellRows,dir,path);
+    }
+}

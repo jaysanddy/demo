@@ -1,0 +1,11 @@
+package com.vk.mapper;
+
+import com.vk.model.JointRiverLevelKey;
+
+public interface JointRiverLevelMapper {
+    int deleteByPrimaryKey(JointRiverLevelKey key);
+
+    int insert(JointRiverLevelKey record);
+
+    int insertSelective(JointRiverLevelKey record);
+}

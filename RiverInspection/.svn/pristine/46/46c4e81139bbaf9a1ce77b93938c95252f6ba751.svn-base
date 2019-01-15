@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>问题统计</title>
+	<link href="/../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+	<link href="/../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/pandyle.min.js"></script>
+	<script src="/../js/laydate/laydate.js"></script>
+    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+    <link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <style>
+
+
+        th {
+            background: linear-gradient(to bottom, #f4fbff, #cdf1ff);
+            height: 18px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #8ba3b9;
+            font-size: 12px;
+            padding: 5px 0;
+            text-align: center;
+        }
+
+        tbody>tr:last-child {
+            font-weight: bold;
+        }
+
+        table tr:nth-child(odd){
+            background-color: #f9fdff;
+        }
+		.btn-success{background-color: #1c84c6 !important;border-color: #1c84c6 !important;}
+		.ibox-content{padding-bottom: 0 !important;}
+    </style>
+</head>
+
+<body>
+	<div class="ibox-content">
+		<p style="text-align: center;font-weight: bold; margin: 20px auto; font-size: 18px;">全市河道巡查问题情况统计表<span id="startTime"></span>至<span id="endTime"></span></p>
+		<button type="button" class="btn btn-w-s btn-success" style="margin:10px 0px 20px 5px;" id="export">导出记录</button>
+		<div class="jqGrid_wrapper">
+			<!--<input id="riverName" placeholder="请输入河道名称" style="margin-bottom:15px;padding:0 10px;height:35px;border-radius: 3px;width:200px;border:1px solid #eee;margin-right:10px;">-->
+			<!--<input id="title" placeholder="请输入标题" style="margin-bottom:15px;padding:0 10px;height:35px;border-radius: 3px;width:200px;border:1px solid #eee;margin-right:10px;">-->
+
+			<label style="margin-left: 10px;">问题创建时间：</label>
+			<input placeholder="开始日期" class="time" id="startDate" style="margin-bottom:15px;padding:0 10px;height:35px;border-radius: 3px;width:200px;border:1px solid #eee;margin-right:10px;">
+			<input placeholder="结束日期" class="time" id="endDate" style="margin-bottom:15px;padding:0 10px;height:35px;border-radius: 3px;width:200px;border:1px solid #eee;margin-right:10px;">
+			<!--<select id="firstAssess" style="margin-bottom:15px;padding:0 10px;height:35px;border-radius: 3px;width:200px;border:1px solid #eee;margin-right:10px;">-->
+				<!--<option value=" ">请选择</option>-->
+				<!--<option value="0">优质</option>-->
+				<!--<option value="1">一般</option>-->
+				<!--<option value="2">较差</option>-->
+			<!--</select>-->
+			<button type="button" id="searchButton" class="btn btn-w-s btn-danger" onclick="getAreaStats()">查询</button>
+		</div>
+	</div>
+	
+<table>
+    <thead>
+    <tr>
+        <th colspan="1">区县</th>
+        <th colspan="1">巡查数(条)</th>
+        <th colspan="1">需整改数(条)</th>
+        <th colspan="1">巡查整改率(%)</th>
+        <th colspan="1">已整改数(条)</th>
+        <th colspan="1">已整改率(%)</th>
+        <th colspan="1">扣分</th>
+
+    </tr>
+    </thead>
+    <tbody p-each="areas">
+    <tr>
+        <td>{{areaName}}</td>
+        <td>{{total}}</td>
+        <td>{{al}}</td>
+        <td>{{alp}}</td>
+        <td>{{fal}}</td>
+        <td>{{falp}}</td>
+        <td>{{score}}</td>
+    </tr>
+    </tbody>
+</table>
+<!-- 1、total 总数 2、nal 无需整改数量 3、al 整改数量 4、alp 整改率 5、fal 已整改数量 6、已整改率-->
+<script>
+	lay('.time').each(function(){
+		laydate.render({
+			elem: this
+			,trigger: 'click'
+		});
+	});
+	
+    var data = {
+        areas: [{
+            areaName: '张家港市',
+            total: 347,
+            al: 12,
+            alp: 567,
+            fal: 32,
+            falp: 6,
+            score: 78
+        }, {
+            name: '常熟市',
+            hmqj_1: 32,
+            hmqj_2: 456,
+            hmqj_3: 325,
+            hmqj_4: 11,
+            hazq_1: 35,
+            hazq_2: 67
+
+        }, {
+            name: '太仓市',
+            hmqj_1: 432,
+            hmqj_2: 67,
+            hmqj_3: 901,
+            hmqj_4: 43,
+            hazq_1: 678,
+            hazq_2: 34
+        }, {
+            name: '昆山市',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '吴江区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '吴中区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '相城区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '工业园区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '高新区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78
+        }, {
+            name: '姑苏区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '合计',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, ]
+    };
+//    $('table').vm(data);
+
+    getAreaStats();
+    function getAreaStats() {
+        var beginTime = $("#startDate").val();
+        var endTime = $("#endDate").val();
+        $.ajax({
+            type:"post",
+            url:"../stats/getAreaStats",
+            dataType : "json",
+            data : {
+                "beginTime":beginTime,
+                "endTime":endTime
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+
+            },
+            success : function(result) {
+                 if(result.code==200){
+                     console.log(result);
+                     var data = '{"areas": '+JSON.stringify(result.data)+'}';
+                     $('table').vm(jQuery.parseJSON(data));
+                 }else {
+
+                 }
+            }
+
+        });
+    }
+
+    getDays();
+    function getDays() {
+        $.ajax({
+            type:"post",
+            url:"../stats/getDays",
+            dataType : "json",
+            data : {
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+
+            },
+            success : function(result) {
+                if(result.code==200){
+                    console.log(result);
+                    $("#startTime").html(result.data.getFirstDay);
+                    $("#endTime").html(result.data.getNowDay);
+                }
+            }
+
+        });
+    }
+
+    $('#export').on('click', function() {
+        var beginTime = $("#startDate").val().trim();
+        var endTime = $("#endDate").val().trim();
+        $.ajax({
+            type: "post",
+            url: "../stats/getAreaStatsExport ",
+            dataType: "json",
+            data: {
+                "beginTime":beginTime,
+                "endTime":endTime
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert(XMLHttpRequest.status);
+                alert(XMLHttpRequest.readyState);
+                alert(textStatus);
+            },
+            success: function (data) {
+                if(data.code==200){
+                    window.location.href = "../"+data.data;
+                    sweetAlert("哎呦……", data.msg,"success");
+                }else {
+                    sweetAlert("哎呦……", data.msg,"error");
+                }
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

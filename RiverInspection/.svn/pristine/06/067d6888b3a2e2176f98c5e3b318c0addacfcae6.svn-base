@@ -1,0 +1,58 @@
+package com.vk.service.impl;
+
+import com.vk.mapper.InspectionReusltFileMapper;
+import com.vk.mapper.InspectionReusltMapper;
+import com.vk.model.InspectionFile;
+import com.vk.model.InspectionReuslt;
+import com.vk.model.InspectionReusltFile;
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+import com.vk.service.InspectionReusltService;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by weijin on 2018/6/28.
+ */
+@Service
+public class InspectionReusltServiceImpl implements InspectionReusltService {
+    @Resource
+    private InspectionReusltMapper inspectionReusltMapper;
+    @Resource
+    private InspectionReusltFileMapper inspectionReusltFileMapper;
+
+    @Transactional
+    @Override
+    public Result insertResult(Integer recordId, String context, List photoFiles, Integer status)throws Exception {
+        Result result = new Result(ResultData.FAILED,null,"插入失败");
+        try {
+            InspectionReuslt inspectionReuslt =new InspectionReuslt();
+            inspectionReuslt.setRecordId(recordId);
+            inspectionReuslt.setContext(context);
+            inspectionReuslt.setStatus(status);
+            inspectionReuslt.setCreateTime(new Date());
+            inspectionReusltMapper.insert(inspectionReuslt);
+
+            if(photoFiles.size()>0){
+                for(int i=0;i<photoFiles.size();i++){
+                    InspectionReusltFile file = new InspectionReusltFile();
+                    file.setType(0);
+                    file.setCreateTime(new Date());
+                    file.setResultId(inspectionReuslt.getId());
+                    file.setFileName(photoFiles.get(i).toString());
+                    inspectionReusltFileMapper.insertSelective(file);
+                }
+            }
+            result.setCode(Result.SUCCESS);
+            result.setMsg("插入成功");
+        }catch (Exception e){
+            throw new RuntimeException("",e.getCause());
+        }
+        return result;
+    }
+}

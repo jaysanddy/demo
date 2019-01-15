@@ -1,0 +1,122 @@
+package com.vk.service.impl;
+
+import com.vk.mapper.AreaMapper;
+import com.vk.mapper.InspectionQuestionMapper;
+import com.vk.mapper.InspectionRecordMapper;
+import com.vk.model.Area;
+import com.vk.model.InspectionRecord;
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+import com.vk.service.StatsService;
+import com.vk.util.DateUtil;
+import com.vk.util.ExportXmlUtil;
+import com.vk.util.TextUtil;
+import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by wj on 18-7-4.
+ */
+@Service
+public class StatsServiceImpl implements StatsService{
+
+    @Resource
+    private InspectionQuestionMapper inspectionQuestionMapper;
+
+    @Resource
+    private InspectionRecordMapper inspectionRecordMapper;
+
+    @Resource
+    private AreaMapper areaMapper;
+
+    @Value("${project.uploadFilePath}")
+    private String projectUrl;
+
+    @Override
+    public ResultData getQuestionStats(String beginTime, String endTime) {
+        ResultData resultData = new ResultData(Result.FAILED,null,"error");
+        List<Map<String,Object>> resultList = new ArrayList<>();
+        List<Area> areaList = areaMapper.getArea();
+        for(Area area:areaList){
+            List<Map<String,Object>> listMap = inspectionQuestionMapper.getQuestionStats(beginTime,endTime,area.getId());
+            resultList.add(transformColumnToRow(listMap,area.getId(),area.getName()));
+        }
+        List<Map<String,Object>> listMap = inspectionQuestionMapper.getQuestionStats(beginTime,endTime,null);
+        resultList.add(transformColumnToRow(listMap,0,"总计"));
+        if(resultList!=null&&resultList.size()>0){
+            resultData.setData(resultList);
+            resultData.setCode(Result.SUCCESS);
+            resultData.setMsg("查询成功！");
+        }
+        return resultData;
+    }
+
+    private Map<String,Object> transformColumnToRow( List<Map<String,Object>> listMap,Integer areaId,String areaName){
+        Map<String,Object> resultMap = new HashedMap();
+        for(Map<String,Object> map:listMap){
+            resultMap.put("qid"+map.get("questionId"),map.get("count"));
+        }
+        resultMap.put("areaId",areaId);
+        resultMap.put("areaName",areaName);
+        return resultMap;
+    }
+    @Override
+    public ResultData getAreaStats(String beginTime, String endTime, Integer riverLevelId) {
+        ResultData resultData = new ResultData(Result.FAILED,null,"error");
+        List<Map<String,Object>> maps = inspectionRecordMapper.getAreaStats(beginTime,endTime,riverLevelId);
+        List<Map<String,Object>> totalMap = inspectionRecordMapper.getTotalStats(beginTime,endTime,riverLevelId);
+        maps.addAll(totalMap);
+        if(maps!=null&&maps.size()>0){
+            resultData.setData(maps);
+            resultData.setCode(Result.SUCCESS);
+            resultData.setMsg("查询成功！");
+        }
+        return resultData;
+    }
+
+    @Override
+    public Result getAreaStatsExport(String beginTime, String endTime, Integer riverLevelId) {
+        Result result = new Result(Result.FAILED,null,"获取数据失败");
+        try {
+            if (TextUtil.isEmpty(beginTime)) {
+                beginTime = null;
+            }
+            if (TextUtil.isEmpty(endTime)) {
+                endTime = null;
+            }
+            List<Map<String, Object>> maps = inspectionRecordMapper.getAreaStats(beginTime, endTime, riverLevelId);
+            List<Map<String, Object>> totalMap = inspectionRecordMapper.getTotalStats(beginTime, endTime, riverLevelId);
+            maps.addAll(totalMap);
+            return ExportXmlUtil.areaStatsExport(maps, projectUrl, "uploadFile/areaStats/excel/");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public Result getQuestionStatsExport(String beginTime, String endTime) {
+        Result result = new Result(Result.FAILED,null,"获取数据失败");
+        try {
+            List<Map<String,Object>> resultList = new ArrayList<>();
+            List<Area> areaList = areaMapper.getArea();
+            for(Area area:areaList){
+                List<Map<String,Object>> listMap = inspectionQuestionMapper.getQuestionStats(beginTime,endTime,area.getId());
+                resultList.add(transformColumnToRow(listMap,area.getId(),area.getName()));
+            }
+            List<Map<String,Object>> listMap = inspectionQuestionMapper.getQuestionStats(beginTime,endTime,null);
+            resultList.add(transformColumnToRow(listMap,0,"总计"));
+            return ExportXmlUtil.areaStatsExport(resultList, projectUrl, "uploadFile/questionStats/excel/");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+}

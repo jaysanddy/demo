@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>活动展示</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="renderer" content="webkit">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" type="text/css" href="../css/vol/page.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/vol/index.css"/>
+    <link rel="stylesheet" type="text/css" href="../js/dropload.css"/>
+    <script type="text/javascript" src="../js/date.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/dropload.js"></script>
+    <style>
+        .active-list{
+            position: relative;
+            padding-bottom: 50px;
+        }
+        .dropload-down{
+            position:absolute;
+            bottom:0;
+            left:0;
+            z-index:9;
+            width:100%;
+        }
+        .active-list li{
+            background:#fff;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="header">
+        <a class="back FL" onclick="window.history.back()"><em></em></a>
+        <span>活动展示</span>
+    </div>
+    <ul class="active-list">
+        <!--<li onclick="window.location.href='../page/newsDetail'">-->
+            <!--<img src="../img/vol/layer1.png">-->
+            <!--<div class="active-right">-->
+                <!--<p>苏申外港</p>-->
+                <!--<span>2000-2001年按照4级航道标准整治，河底宽40米设计水深2.5米，口宽60米</span>-->
+            <!--</div>-->
+            <!--<a class="icon-right" href="#"></a>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<img src="../img/vol/layer1.png">-->
+            <!--<div class="active-right">-->
+                <!--<p>苏申外港</p>-->
+                <!--<span>2000-2001年按照4级航道标准整治，河底宽40米设计水深2.5米，口宽60米</span>-->
+            <!--</div>-->
+            <!--<a class="icon-right" href="#"></a>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<img src="../img/vol/layer1.png">-->
+            <!--<div class="active-right">-->
+                <!--<p>苏申外港</p>-->
+                <!--<span>2000-2001年按照4级航道标准整治，河底宽40米设计水深2.5米，口宽60米</span>-->
+            <!--</div>-->
+            <!--<a class="icon-right" href="#"></a>-->
+        <!--</li>-->
+    </ul>
+</div>
+</body>
+<input type="hidden" id="areaId" th:value="${areaId}">
+<input type="hidden" id="page" value="0">
+<input type="hidden" id="rows" value="10">
+<script>
+    function link(id){
+        window.location.href="../page/newsDetail?id="+id;
+    }
+
+    $(document).ready(function(){
+
+        var page = $("#page").val();
+        var areaId = $("#areaId").val();
+        var rows = $("#rows").val();
+
+        $(".active-list").dropload({
+            //滑动区域
+            scrollArea: window,
+            loadDownFn: function (me) {
+
+
+                var reTag = /<(?:.|\s)*?>/g;
+                page++;
+                $.ajax({
+                    url: "../news/selectNews",
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        "areaId": areaId,
+                        "page": page,
+                        "rows": rows
+                    },
+                    success: function (data) {
+                        $("#page").val(page);
+                        var list = data.data;
+                        var code = '';
+                        for (var i = 0; i < list.length; i++) {
+                            code += "<li onclick='link("+list[i].id+")'>";
+                            code += "<img src='../" + list[i].img + "'>";
+                            code += "<div class='active-right'>";
+                            code += "<p>" + list[i].title + "</p>";
+                            code += "<span>" + getStrSubstring(list[i].content.replace(reTag, '')) + "</span>";
+                            code += "</div><a class='icon-right href='#'></a>";
+                            code += "</li>";
+                        }
+                        $(".active-list").append(code);
+                        if(page == data.totalPages){
+                            me.lock();//锁定上拉下拉操作
+                            me.noData();//无数据
+                        }
+                    },
+                    error: function (e) {
+                        me.resetload();
+                    }
+                });//ajax()方法结束
+                setTimeout(function () {
+                    me.resetload();//每次数据加载完都要重置（dropload的方法）
+                }, 1000);
+
+            }//loadDownFn()方法结束
+        })
+    });
+    function load() {
+        $(".active-list").dropload({
+            //滑动区域
+            scrollArea: window,
+            loadDownFn: function (me) {
+                var page = $("#page").val();
+                var areaId = $("#areaId").val();
+                var rows = $("#rows").val();
+                var reTag = /<(?:.|\s)*?>/g;
+                page++;
+                $.ajax({
+                    url: "../news/selectNews",
+                    type: 'get',
+                    dataType: 'json',
+                    data: {
+                        "areaId": areaId,
+                        "page": page,
+                        "rows": rows
+                    },
+                    success: function (data) {
+                        $("#page").val(page);
+                        console.log(data);
+                        var list = data.data;
+                        var code = '';
+                        for (var i = 0; i < list.length; i++) {
+                            code += "<li onclick='window.location.href=../page/newsDetail'>";
+                            code += "<img src='../" + list[i].img + "'>";
+                            code += "<div class='active-right'>";
+                            code += "<p>" + list[i].title + "</p>";
+                            code += "<span>" + getStrSubstring(list[i].content.replace(reTag, '')) + "</span>";
+                            code += "</div><a class='icon-right href='#'></a>";
+                            code += "</li>";
+                        }
+                        $(".active-list").append(code);
+                        if(page == data.totalPages){
+//                            $("#m2").hide();//隐藏正在加载
+//                            $("#m3").show();//显示全部加载完
+//                            $("#m4").hide();//隐藏网络异常
+                            me.lock();//锁定上拉下拉操作
+                            me.noData();//无数据
+                        }
+                    },
+                    error: function (e) {
+//                        $("#m2").hide();//隐藏正在加载
+//                        $("#m3").hide();//隐藏全部加载完
+//                        $("#m4").show();//显示网络异常
+//                        console.log('错误' + e);
+                        me.resetload();
+                    }
+                });//ajax()方法结束
+                setTimeout(function () {
+                    me.resetload();//每次数据加载完都要重置（dropload的方法）
+                }, 1000);
+
+            }//loadDownFn()方法结束
+        })
+    }
+</script>
+</html>

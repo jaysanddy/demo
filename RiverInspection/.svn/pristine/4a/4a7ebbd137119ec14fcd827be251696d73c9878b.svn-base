@@ -1,0 +1,23 @@
+package com.vk.model;
+
+public class JointRiverLevelKey {
+    private Integer riverid;
+
+    private Integer levelId;
+
+    public Integer getRiverid() {
+        return riverid;
+    }
+
+    public void setRiverid(Integer riverid) {
+        this.riverid = riverid;
+    }
+
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(Integer levelId) {
+        this.levelId = levelId;
+    }
+}

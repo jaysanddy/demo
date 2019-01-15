@@ -1,0 +1,30 @@
+package com.vk.controller;
+
+import com.vk.response.Result;
+import com.vk.service.RiverService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+/**
+ * Created by weijin on 2018/6/21.
+ */
+@RestController
+@RequestMapping("river")
+public class RiverController {
+    @Resource
+    private RiverService riverService;
+
+    //创建河流
+    @RequestMapping("createRiver")
+    public Result createRiver(String riverName, Double lengths, String beginArea, String endArea, String basinArea, String remark, String areas, Integer areaId, String riverLevelIds){
+        return riverService.createRiver(riverName, lengths, beginArea, endArea, basinArea, remark, areas, areaId, riverLevelIds);
+    }
+
+    //获得河流列表
+    @RequestMapping("getRivers")
+    public Result getRivers(String riverName,Integer areaId,Integer riverLevelId,Integer pageNum,Integer pageSize){
+        return riverService.getRivers(riverName, areaId, riverLevelId, pageNum, pageSize);
+    }
+}

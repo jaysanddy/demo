@@ -1,0 +1,214 @@
+package com.vk.request;
+
+/**
+ * Created by weijin on 2018/7/10.
+ */
+public class QuestionStatsRequest {
+    private String areaName;
+    private String qId5;
+    private String qId6;
+    private String qId7;
+    private String qId8;
+    private String qId9;
+    private String qId10;
+    private String qId11;
+    private String qId12;
+    private String qId13;
+    private String qId14;
+    private String qId15;
+    private String qId16;
+    private String qId17;
+    private String qId18;
+    private String qId19;
+    private String qId20;
+    private String qId21;
+    private String qId22;
+    private String qId23;
+    private String qId24;
+    private String qId25;
+    private String qId26;
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getqId5() {
+        return qId5;
+    }
+
+    public void setqId5(String qId5) {
+        this.qId5 = qId5;
+    }
+
+    public String getqId6() {
+        return qId6;
+    }
+
+    public void setqId6(String qId6) {
+        this.qId6 = qId6;
+    }
+
+    public String getqId7() {
+        return qId7;
+    }
+
+    public void setqId7(String qId7) {
+        this.qId7 = qId7;
+    }
+
+    public String getqId8() {
+        return qId8;
+    }
+
+    public void setqId8(String qId8) {
+        this.qId8 = qId8;
+    }
+
+    public String getqId9() {
+        return qId9;
+    }
+
+    public void setqId9(String qId9) {
+        this.qId9 = qId9;
+    }
+
+    public String getqId10() {
+        return qId10;
+    }
+
+    public void setqId10(String qId10) {
+        this.qId10 = qId10;
+    }
+
+    public String getqId11() {
+        return qId11;
+    }
+
+    public void setqId11(String qId11) {
+        this.qId11 = qId11;
+    }
+
+    public String getqId12() {
+        return qId12;
+    }
+
+    public void setqId12(String qId12) {
+        this.qId12 = qId12;
+    }
+
+    public String getqId13() {
+        return qId13;
+    }
+
+    public void setqId13(String qId13) {
+        this.qId13 = qId13;
+    }
+
+    public String getqId14() {
+        return qId14;
+    }
+
+    public void setqId14(String qId14) {
+        this.qId14 = qId14;
+    }
+
+    public String getqId15() {
+        return qId15;
+    }
+
+    public void setqId15(String qId15) {
+        this.qId15 = qId15;
+    }
+
+    public String getqId16() {
+        return qId16;
+    }
+
+    public void setqId16(String qId16) {
+        this.qId16 = qId16;
+    }
+
+    public String getqId17() {
+        return qId17;
+    }
+
+    public void setqId17(String qId17) {
+        this.qId17 = qId17;
+    }
+
+    public String getqId18() {
+        return qId18;
+    }
+
+    public void setqId18(String qId18) {
+        this.qId18 = qId18;
+    }
+
+    public String getqId19() {
+        return qId19;
+    }
+
+    public void setqId19(String qId19) {
+        this.qId19 = qId19;
+    }
+
+    public String getqId20() {
+        return qId20;
+    }
+
+    public void setqId20(String qId20) {
+        this.qId20 = qId20;
+    }
+
+    public String getqId21() {
+        return qId21;
+    }
+
+    public void setqId21(String qId21) {
+        this.qId21 = qId21;
+    }
+
+    public String getqId22() {
+        return qId22;
+    }
+
+    public void setqId22(String qId22) {
+        this.qId22 = qId22;
+    }
+
+    public String getqId23() {
+        return qId23;
+    }
+
+    public void setqId23(String qId23) {
+        this.qId23 = qId23;
+    }
+
+    public String getqId24() {
+        return qId24;
+    }
+
+    public void setqId24(String qId24) {
+        this.qId24 = qId24;
+    }
+
+    public String getqId25() {
+        return qId25;
+    }
+
+    public void setqId25(String qId25) {
+        this.qId25 = qId25;
+    }
+
+    public String getqId26() {
+        return qId26;
+    }
+
+    public void setqId26(String qId26) {
+        this.qId26 = qId26;
+    }
+}

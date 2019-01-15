@@ -1,0 +1,17 @@
+package com.vk.mapper;
+
+import com.vk.model.RiverQuestion;
+
+public interface RiverQuestionMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(RiverQuestion record);
+
+    int insertSelective(RiverQuestion record);
+
+    RiverQuestion selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(RiverQuestion record);
+
+    int updateByPrimaryKey(RiverQuestion record);
+}

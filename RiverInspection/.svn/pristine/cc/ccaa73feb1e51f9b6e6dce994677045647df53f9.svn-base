@@ -1,0 +1,24 @@
+package com.vk.service;
+
+import com.vk.request.DemoResult;
+import com.vk.request.InspectionAnswerQuestions;
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+
+import java.util.List;
+
+/**
+ * Created by weijin on 2018/6/25.
+ */
+public interface InspectionRecordService {
+    //创建问题
+    Result createRecord (Integer areaId,String title,String riverName,Integer riverId,String riverNo,String towns,String lat,String lng,String address,Integer firstAssess,String describe,String[] photoFiles,Integer score,Integer rectification,List<DemoResult> detail);
+
+    //获取问题列表
+    ResultData getRecord(String[] states,Integer pageNum,Integer pageSize,Integer areaId);
+
+    //获取某个问题的详细情况
+    ResultData getRecordById(Integer recordId);
+
+    ResultData getRecordCount(Integer areaId);
+}

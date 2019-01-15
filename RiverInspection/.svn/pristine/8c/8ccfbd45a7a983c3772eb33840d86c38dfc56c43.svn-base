@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="renderer" content="webkit" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>问题复查</title>
+  <link rel="stylesheet" type="text/css" href="../css/miniMobile.css"/>
+  <script type="text/javascript" src="../js/zepto.min.js"></script>
+  <script type="text/javascript" src="../js/miniMobile.js"></script>
+  <link rel="stylesheet" type="text/css" href="../plugins/mobileSelect/mobileSelect.css">
+  <script src="../plugins/mobileSelect/mobileSelect.js" type="text/javascript"></script>
+  <script src="../plugins/icheck/icheck.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../plugins/noUiSlider.10.0.0/nouislider.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" href="../plugins/switchery/switchery.css"/>
+  <script src="../plugins/switchery/switchery.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" src="../plugins/layer_mobile/layer.js"></script>
+  <link rel="stylesheet" type="text/css" href="../plugins/fonticon/iconfont.css" />
+  <link rel="stylesheet" type="text/css" href="../css/style.css" />
+  <link rel="stylesheet" type="text/css" href="../plugins/photoswipe/photoswipe.css" />
+  <link rel="stylesheet" type="text/css" href="../plugins/photoswipe/default-skin/default-skin.css" />
+  <script src="../plugins/photoswipe/photoswipe.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../plugins/photoswipe/photoswipe-ui-default.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body class="pb12 fadeIn animated">
+<input type="hidden" id="recordId" th:value="${recordId}">
+<input type="hidden" id="resultId" th:value="${resultId}">
+<div class="load">
+  <img src="../img/timg.gif">
+</div>
+<div class="content pad-top">
+  <div class="top">
+    <a onclick="javascript:history.go(-1)"><img src="../img/back.png" alt=""></a>
+    问题复查
+  </div>
+  <form class="upload">
+    <div class="list">
+      <div class="item">
+        标题
+        <input id="title" type="button" class="form-control" value=""/>
+      </div>
+      <div class="item">
+        河道名称
+        <input id="riverName" type="button" class="form-control" value=""/>
+      </div>
+      <div class="item">
+        所属编号
+        <input id="num" type="button" class="form-control" value=""/>
+      </div>
+      <div class="item">
+        所属乡镇
+        <input id="towns" type="button" class="form-control" value=""/>
+      </div>
+      <div class="item no-border">
+        <img class="icon-dw" src="../img/icon-dw-b.png">
+        <span class="text-gray" id="adr"></span>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="list">
+      <div class="item">
+        <p>河道评定：</p>
+        <ul class="river-pd">
+          <li>优质</li>
+          <li>一般</li>
+          <li>较差</li>
+        </ul>
+      </div>
+      <div class="item no-border">
+        河道描述：
+        <textarea id="des" class="form-control-text" readonly></textarea>
+      </div>
+      <div class="clear"></div>
+    </div>
+
+    <div class="list">
+      <div class="item no-border">
+        <p>现场照片：</p>
+        <ul class="add-img" id="Gallery">
+
+        </ul>
+      </div>
+      <div class="clear"></div>
+    </div>
+    <p class="bg-gray">选择河湖问题</p>
+    <div class="list">
+      <dl class="o-h">
+        <dt><span>|</span>河面清洁<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+        <dd>
+          <div class="item">
+            <p>请选择河面清洁问题 <input id="firstId1" type="hidden"></p>
+            <ul class="river-qj toggle" id="addLengthOne">
+
+            </ul>
+          </div>
+          <div class="item no-border" style="display: block">
+            <p>填写说明</p>
+            <textarea id="des1" class="form-control-text" placeholder="备注内容" readonly></textarea>
+          </div>
+        </dd>
+      </dl>
+      <div class="clear"></div>
+    </div>
+    <div class="list">
+      <dl class="o-h">
+        <dt><span>|</span>河岸整齐<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+        <dd>
+          <div class="item">
+            <p>请选择河岸整齐问题<input id="firstId2" type="hidden"></p>
+            <ul class="river-qj toggle" id="addLengthTwo">
+
+            </ul>
+          </div>
+          <div class="item no-border" style="display: block">
+            <p>填写说明</p>
+            <textarea id="des2" class="form-control-text" placeholder="备注内容" readonly></textarea>
+          </div>
+        </dd>
+      </dl>
+      <div class="clear"></div>
+    </div>
+    <div class="list">
+      <dl class="o-h">
+        <dt><span>|</span>河道通畅<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+        <dd>
+          <div class="item">
+            <p>请选择河道通畅问题<input id="firstId3" type="hidden"></p>
+            <ul class="river-qj toggle" id="addLengthThree">
+
+            </ul>
+          </div>
+          <div class="item no-border" style="display: block">
+            <p>填写说明</p>
+            <textarea id="des3" class="form-control-text" placeholder="备注内容" readonly></textarea>
+          </div>
+        </dd>
+      </dl>
+      <div class="clear"></div>
+    </div>
+    <div class="list">
+      <dl class="o-h">
+        <dt><span>|</span>河道水质<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+        <dd>
+          <div class="item">
+            <p>请选择河道水质问题<input id="firstId4" type="hidden"></p>
+            <ul class="river-qj toggle" id="addLengthFour">
+
+            </ul>
+          </div>
+          <div class="item no-border" style="display: block">
+            <p>填写说明</p>
+            <textarea id="des4" class="form-control-text" placeholder="备注内容" readonly></textarea>
+          </div>
+        </dd>
+      </dl>
+      <div class="clear"></div>
+    </div>
+
+      <p class="bg-gray">河道分数统计</p>
+      <div class="list">
+        <dl class="o-h">
+          <dt><span>|</span>河道总分 <b class="right green" id="score"></b></dt>
+        </dl>
+        <div class="clear"></div>
+      </div>
+      <p class="bg-gray">问题处理情况</p>
+      <div class="list">
+        <ul class="state-ul" id="stateUl">
+          <!--<li>-->
+            <!--<em></em>-->
+            <!--<p>已推送到大联动</p>-->
+          <!--</li>-->
+          <!--<li>-->
+            <!--<em></em>-->
+            <!--<p>派遣时间：2018-06-22 16:00</p>-->
+            <!--<p>派遣部门名称：区联动指挥中心</p>-->
+            <!--<p>主责部门名称：吴江开发区（同里镇）联动指挥中心</p>-->
+            <!--<p>到场时间要求（分钟数）：190</p>-->
+            <!--<p>处置时间要求（分钟数）：190</p>-->
+            <!--<p>到场截止时间：2018-06-22 16:00</p>-->
+            <!--<p>处置截止时间：2018-06-22 16:00</p>-->
+            <!--<p>派遣意见：请尽快处理，并在处理完成后及时反馈到指挥中心检查结案</p>-->
+          <!--</li>-->
+        </ul>
+        <div class="clear"></div>
+      </div>
+      <p class="bg-gray">上传复查结果</p>
+      <div class="list">
+        <div class="item no-border">
+           <p>填写说明</p>
+           <textarea class="form-control-text" id="recheckDes" placeholder="请填写说明"></textarea>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="list">
+        <div class="item no-border">
+          <p>现场照片：</p>
+          <ul class="add-img" id="recheckGallery">
+
+          </ul>
+          <ul class="add-img" id="addImg">
+            <li><input id="imgUpload" type="file"></li>
+          </ul>
+        </div>
+        <div class="clear"></div>
+      </div>
+    <div class="list">
+      <dl class="o-h">
+        <dt><span>|</span>是否完成整改
+        <div class="right check-box">
+          <input type="checkbox" class="js-switch" checked/>
+        </div>
+        </dt>
+      </dl>
+      <div class="clear"></div>
+    </div>
+      <div class="list">
+          <input type="button" class="btn-primary" value="提交问题" onclick="subForm(3)"/>
+      </div>
+      <input type="hidden" id="status">
+    </form>
+  </div>
+    <script>
+        getDetail();
+        getSecond();
+        var imgNum=0;
+        $("#imgUpload").change(function(){
+            var pic=this.files[0];
+            preview_picture(pic);
+        })
+        function preview_picture(pic){
+            imgNum++;
+            var r=new FileReader();
+            r.readAsDataURL(pic);
+            r.onload=function(e){
+                var code="";
+                code+='<li><img id='+imgNum+' src='+this.result+'><a class="remove">-</a></li>';
+                $("#addImg").append(code);
+                // 图片删除
+                $(".remove").click(function() {
+                    var _this=$(this);
+                    layer.open({
+                        content: '确定要删除吗？',
+                        btn: ['删除', '取消'],
+                        skin: 'footer',
+                        yes: function(index) {
+                            _this.parent().remove();
+                            layer.open({
+                                content: '删除成功！',
+                                skin: 'msg',
+                                time:1
+                            });
+                        }
+                    });
+                })
+            }
+        }
+        function getSecond(){
+            var userId=$("#userId").val();
+            $.post("/riverQuestion/getAllRiverQuestion",{},
+                function(data){
+                    var code1='';
+                    var code2='';
+                    var code3='';
+                    var code4='';
+                    data=data.data;
+                    for(var i=0;i<data.length;i++){
+                        if(data[i].firstName=="河面清洁"){
+                            code1+='<li>';
+                            code1+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'" class="ids">'+data[i].secondName+'</b>';
+                            code1+='<input onchange="changeScore()" type="number" value="" class="scoreIpt" readonly><span>-</span>';
+                            code1+='</li>';
+                            $("#addLengthOne").html(code1);
+                            $("#firstId1").val(data[i].firstId);
+                        }
+                        if(data[i].firstName=="河岸整齐"){
+                            code2+='<li>';
+                            code2+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'"  class="ids">'+data[i].secondName+'</b>';
+                            code2+='<input onchange="changeScore()" type="number" value="" class="scoreIpt" readonly><span>-</span>';
+                            code2+='</li>';
+                            $("#firstId2").val(data[i].firstId);
+                            $("#addLengthTwo").html(code2);
+                        }
+                        if(data[i].firstName=="河道通畅"){
+                            code3+='<li>';
+                            code3+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'"  class="ids">'+data[i].secondName+'</b>';
+                            code3+='<input onchange="changeScore()" type="number" value="" class="scoreIpt" readonly><span>-</span>';
+                            code3+='</li>';
+                            $("#firstId3").val(data[i].firstId);
+                            $("#addLengthThree").html(code3);
+                        }
+                        if(data[i].firstName=="河道水质"){
+                            code4+='<li>';
+                            code4+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'"  class="ids">'+data[i].secondName+'</b>';
+                            code4+='<input onchange="changeScore()" type="number" value="" class="scoreIpt" readonly><span>-</span>';
+                            code4+='</li>';
+                            $("#firstId4").val(data[i].firstId);
+                            $("#addLengthFour").html(code4);
+                        }
+                        $(".river-qj li:last-child").find("span").hide();
+                        $(".river-qj li:last-child").find("input.scoreIpt").hide();
+                    }
+
+                });
+        }
+        function getDetail(){
+            var recordId=$("#recordId").val();
+            $.post("/inspectionRecord/getRecordById",{
+                    recordId:recordId
+                },
+                function(data){
+                    var result=data.data;
+                    console.log(result);
+                    $("#title").val(result.title);
+                    $("#riverName").val(result.riverName);
+                    $("#num").val(result.riverNo);
+                    $("#towns").val(result.towns);
+                    $("#adr").text(result.address);
+                    $("#des").val(result.context);
+                    $("#recheckDes").text(result.context);
+
+                    var firstAssess=result.firstAssess;
+                    firstAssess++;
+                    $('.river-pd li:nth-child('+firstAssess+')').addClass("active");
+//                   图片
+                    var imgList="";
+                    for(var i=0;i<result.files.length;i++){
+                        imgList+='<li><img src="../'+result.files[i].file_name+'" data-w="300" data-h="425"></li>';
+                    }
+                    $("#Gallery").html(imgList);
+                    var recheckImgList="";
+                    for(var i=0;i<result.files.length;i++){
+                        recheckImgList+='<li><img src="../'+result.files[i].file_name+'" data-w="300" data-h="425"></li>';
+                    }
+                    $("#recheckGallery").html(recheckImgList);
+                    $("#score").text(result.score);
+//                    处理时间轴
+                    var report='';
+                    for(var k=0;k<result.report.length;k++){
+                        report+='<li><em></em><p>'+result.report[k].content+'</p></li>';
+                    }
+                    $("#stateUl").html(report)
+//                    河流问题
+                    var riverQuestions=result.riverQuestions;
+                    $("#des1").text(riverQuestions[0].text);
+                    $("#des2").text(riverQuestions[1].text);
+                    $("#des3").text(riverQuestions[2].text);
+                    $("#des4").text(riverQuestions[3].text);
+                    var _quest0=riverQuestions[0].secondQuestions;
+                    var _quest1=riverQuestions[1].secondQuestions;
+                    var _quest2=riverQuestions[2].secondQuestions;
+                    var _quest3=riverQuestions[3].secondQuestions;
+                    if(_quest0!=''){
+                        for(var i=0;i<_quest0.length;i++){
+                            //twoQuestionId
+                            $('#'+_quest0[i].twoQuestionId+'').parent().parent().addClass("active");
+                            $('#'+_quest0[i].twoQuestionId+'').parent().next().val(_quest0[i].score);
+                        }
+                    }
+                    if(_quest1!=''){
+                        for(var i=0;i<_quest1.length;i++){
+                            //twoQuestionId
+                            $('#'+_quest1[i].twoQuestionId+'').parent().parent().addClass("active");
+                            $('#'+_quest1[i].twoQuestionId+'').parent().next().val(_quest1[i].score);
+                        }
+                    }
+                    if(_quest2!=''){
+                        for(var i=0;i<_quest2.length;i++){
+                            //twoQuestionId
+                            $('#'+_quest2[i].twoQuestionId+'').parent().parent().addClass("active");
+                            $('#'+_quest2[i].twoQuestionId+'').parent().next().val(_quest2[i].score);
+                        }
+                    }
+                    if(_quest3!=''){
+                        for(var i=0;i<_quest3.length;i++){
+                            //twoQuestionId
+                            $('#'+_quest3[i].twoQuestionId+'').parent().parent().addClass("active");
+                            $('#'+_quest3[i].twoQuestionId+'').parent().next().val(_quest3[i].score);
+                        }
+                    }
+
+                });
+
+        }
+
+        $(".add-sm").click(function(){
+            $(this).prev().show();
+            $(this).hide();
+        })
+
+        // 提交表单
+        function subForm(s){
+            var recordId=$("#recordId").val();
+            var resultId=$("#resultId").val();
+            var status=s;
+            var rectification=0;
+            if ($('.js-switch').is(':checked')){
+                rectification=1;
+            }
+
+            var msg='确定上传吗？';
+            var context=$("#recheckDes").val();
+            var recheckPhotoFiles=[];
+            $("#addImg li").each(function(){
+                var imgSrc=$(this).find("img").attr("src");
+                if(imgSrc!=undefined){
+                    imgSrc=imgSrc.split(',')[imgSrc.split(',').length - 1];
+                    recheckPhotoFiles.push(imgSrc);
+                }
+            });
+            if(context==''){
+                layer.open({
+                    content: '请填写复查说明',
+                    skin: 'footer',
+                    time:1
+                });
+                return false;
+            }else{
+                layer.open({
+                    content: msg,
+                    btn: ['确定', '取消'],
+                    skin: 'footer',
+                    yes: function() {
+                        $.post("/inspectionReuslt/insertResult",
+                            {
+                                recordId:recordId,
+                                resultId:resultId,
+                                status:rectification,
+                                context:context,
+                                photoFiles:JSON.stringify(recheckPhotoFiles)
+                            },
+                            function(status){
+                                layer.open({
+                                    content: '上传成功！',
+                                    skin: 'msg',
+                                    time:1
+                                });
+                                setTimeout("window.location.href='../page/recordList'",1000)
+                            }
+                        );
+                    }
+                });
+
+            }
+        }
+
+        // 下拉框
+        $('dl dt').live('tap', function() {
+            $(this).siblings('dd').toggle();
+            $(this).children('i').toggleClass('icon-fold icon-unfold');
+        });
+        var elem = document.querySelector('.js-switch');
+        var switchery = new Switchery(elem,{ size: 'small' });
+    </script>
+    <!-- 下面是相册切换的必备代码 -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="pswp__bg"></div>
+      <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+          <div class="pswp__item"></div>
+        </div>
+        <div class="pswp__ui pswp__ui--hidden">
+          <div class="pswp__top-bar">
+            <div class="pswp__counter"></div>
+            <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+            <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+            <div class="pswp__preloader">
+              <div class="pswp__preloader__icn">
+                <div class="pswp__preloader__cut">
+                  <div class="pswp__preloader__donut"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+            <div class="pswp__share-tooltip"></div>
+          </div>
+          <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+          <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+          <div class="pswp__caption">
+            <div class="pswp__caption__center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var openPhotoSwipe = function() {
+        var pswpElement = document.querySelectorAll('.pswp')[0];
+        var items = [];
+        $("#Gallery img").each(function() {
+          var obj = {
+            src: $(this).attr("src"),
+            w: $(this).data("w"),
+            h: $(this).data("h")
+          }
+          items.push(obj);
+        })
+        var options = {
+          history: false,
+          focus: false,
+          showAnimationDuration: 0,
+          hideAnimationDuration: 0
+        };
+        var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+        gallery.init();
+      };
+      $("#Gallery").click(function() {
+        openPhotoSwipe();
+      })
+    </script>
+
+<script type="text/javascript">
+    var openPhotoSwipe1 = function() {
+        var pswpElement = document.querySelectorAll('.pswp')[0];
+        var items = [];
+        $("#recheckGallery img").each(function() {
+            var obj = {
+                src: $(this).attr("src"),
+                w: $(this).data("w"),
+                h: $(this).data("h")
+            }
+            items.push(obj);
+        })
+        var options = {
+            history: false,
+            focus: false,
+            showAnimationDuration: 0,
+            hideAnimationDuration: 0
+        };
+
+        var recheckGallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+        recheckGallery.init();
+    };
+    $("#recheckGallery").click(function() {
+        openPhotoSwipe1();
+    })
+</script>
+  </body>
+
+</html>

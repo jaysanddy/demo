@@ -1,0 +1,51 @@
+package com.vk.service.impl;
+
+import com.vk.mapper.InspectionRecordMapper;
+import com.vk.model.InspectionAnswerQuestions;
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+import com.vk.service.InspectionRecordService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+/**
+ * Created by weijin on 2018/6/25.
+ */
+@Service
+public class InspectionRecordServiceImpl implements InspectionRecordService {
+    @Resource
+    private InspectionRecordMapper inspectionRecordMapper;
+
+
+    @Override
+    public Result createRecord(String title, String riverName, Integer riverId, String riverNo, String towns, String lat, String lng, String address, Integer first_assess, String describe, String[] photoFiles, Integer score, Integer rectification,List<InspectionAnswerQuestions> detail) {
+        Result result = new Result(ResultData.FAILED,null,"插入失败");
+        try{
+//            InspectionRecord inspectionRecord = new InspectionRecord();
+//
+//            inspectionRecord.setTitle(title);
+//            inspectionRecord.setRiverName(riverName);
+//            inspectionRecord.setRiverId(riverId);
+//            inspectionRecord.setRiverNo(riverNo);
+//            inspectionRecord.setTowns(towns);
+//            inspectionRecord.setLat(lat);
+//            inspectionRecord.setLng(lng);
+//            inspectionRecord.setAddress(address);
+//            inspectionRecord.setFirstAssess(first_assess);
+//            inspectionRecord.setDescribe(describe);
+//            inspectionRecord.setScore(score);
+//            inspectionRecord.setRectification(rectification);
+//
+//            inspectionRecordMapper.insertSelective(inspectionRecord);
+            String[] aa = new String[3]  ;
+            for(int i=0;i<photoFiles.length;i++){
+                aa[i] = photoFiles[i];
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+}

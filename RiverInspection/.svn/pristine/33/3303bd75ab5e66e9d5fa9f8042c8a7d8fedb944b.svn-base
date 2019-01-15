@@ -1,0 +1,22 @@
+package com.vk.util;
+
+import com.vk.model.InspectionRecord;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.util.List;
+
+/**
+ * Created by weijin on 2018/7/7.
+ */
+public class ExportXmlUtil {
+
+    public static String export(List<InspectionRecord> list){
+
+        for(InspectionRecord record:list){
+
+        }
+
+        return null;
+    }
+}

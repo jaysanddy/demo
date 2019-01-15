@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="renderer" content="webkit" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>问题上传</title>
+	<script type="text/javascript" src="../js/zepto.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/stylePc.css" />
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wwz42MgLZ6vWNKqvGR109ZEcCTiOfggd"></script>
+</head>
+<body class="pb12 fadeIn animated">
+<div class="load" style="display: none">
+	<img src="../img/timg.gif">
+</div>
+<div class="content">
+	<form class="upload">
+		<div class="list">
+			<div class="item">
+				<span>调查员</span>
+				<input id="title" type="text" class="form-control" placeholder="请填写调查员"/>
+			</div>
+			<div class="item">
+				<span>河道名称</span>
+				<input id="riverName" type="text" class="form-control" placeholder="请填写河道名称"/>
+			</div>
+			<div class="item">
+				<span>河道属性</span>
+				<input id="num" type="text" class="form-control" placeholder="河道属性"/>
+			</div>
+			<div class="item">
+				<span>所属区县</span>
+				<input id="qu" type="text" class="form-control" placeholder="所属区县"/>
+
+			</div>
+			<div class="item">
+				<span>所属乡镇</span>
+				<input id="towns" type="text" class="form-control" placeholder="所属乡镇"/>
+
+			</div>
+			<div class="item">
+				<span>巡查时间</span>
+				<input id="riverPd" type="text" class="form-control" placeholder="巡查时间"/>
+			</div>
+			<div class="item" style="width:100%;">
+				<span>巡查地点</span>
+				<input id="adr" type="text" class="form-control" placeholder="巡查地点"/>
+			</div>
+			<div class="item" style="width:100%;">
+				<span>河道评定</span>
+				<input id="pd" type="button" class="form-control" value="一般"/>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="list">
+			<div class="item no-border">
+				河道描述：
+				<textarea id="des" class="form-control-text" placeholder="备注内容" required></textarea>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="list">
+			<div class="item no-border">
+				<p>现场照片：</p>
+				<ul class="add-img">
+					<li><input id="imgUpload" type="file"></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河面清洁<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河面清洁问题 <input id="firstId1" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthOne">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: none">
+						<p>填写说明</p>
+						<textarea id="des1" class="form-control-text" placeholder="备注内容"></textarea>
+					</div>
+					<div class="add-sm">
+						<img src="../img/add-blue.png">
+						扣分说明
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河岸整齐<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河岸整齐问题<input id="firstId2" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthTwo">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: none">
+						<p>填写说明</p>
+						<textarea id="des2" class="form-control-text" placeholder="备注内容"></textarea>
+					</div>
+					<div class="add-sm">
+						<img src="../img/add-blue.png">
+						扣分说明
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河道通畅<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河道通畅问题<input id="firstId3" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthThree">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: none">
+						<p>填写说明</p>
+						<textarea id="des3" class="form-control-text" placeholder="备注内容"></textarea>
+					</div>
+					<div class="add-sm">
+						<img src="../img/add-blue.png">
+						扣分说明
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河道水质<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河道水质问题<input id="firstId4" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthFour">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: none">
+						<p>填写说明</p>
+						<textarea id="des4" class="form-control-text" placeholder="备注内容"></textarea>
+					</div>
+					<div class="add-sm">
+						<img src="../img/add-blue.png">
+						扣分说明
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<p class="bg-gray">河道分数统计</p>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河道总分 <b class="right green" id="score">100</b></dt>
+				<dt><span>|</span>是否需要整改
+				<div class="right check-box">
+					<a class="active">是</a>
+					<a>否</a>
+				</div>
+				</dt>
+			</dl>
+			<div class="clear"></div>
+		</div>
+	</form>
+</div>
+<!-- 增加说明 -->
+<div class="add-des-layer"></div>
+<input type="hidden" id="areaId" th:value="${areaId}">
+</body>
+<script>
+    function ImgToBase64(file, maxLen, callBack) {
+        var img = new Image();
+        var reader = new FileReader();//读取客户端上的文件
+        reader.onload = function () {
+            var url = reader.result;//读取到的文件内容.这个属性只在读取操作完成之后才有效,并且数据的格式取决于读取操作是由哪个方法发起的.所以必须使用reader.onload，
+            img.src = url;//reader读取的文件内容是base64,利用这个url就能实现上传前预览图片
+        };
+        img.onload = function () {
+            //生成比例
+            var width = img.width, height = img.height;
+            //计算缩放比例
+            var rate = 1;
+            if (width >= height) {
+                if (width > maxLen) {
+                    rate = maxLen / width;
+                }
+            } else {
+                if (height > maxLen) {
+                    rate = maxLen / height;
+                }
+            };
+            img.width = width * rate;
+            img.height = height * rate;
+            //生成canvas
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            var base64 = canvas.toDataURL('image/jpeg', 0.9);
+            callBack(base64);
+        };
+        reader.readAsDataURL(file);
+    }
+    getSecond();
+    function getSecond(){
+        var userId=$("#userId").val();
+        $.post("/riverQuestion/getAllRiverQuestion",{},
+            function(data){
+                var code1='';
+                var code2='';
+                var code3='';
+                var code4='';
+                data=data.data;
+                console.log(data);
+                for(var i=0;i<data.length;i++){
+                    if(data[i].firstName=="河面清洁"){
+                        code1+='<li>';
+                        code1+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" class="ids">'+data[i].secondName+'</b>';
+                        code1+='<input onchange="changeScore()" type="number" value="" class="scoreIpt"><span>-</span>';
+                        code1+='</li>';
+                        $("#addLengthOne").html(code1);
+                        $("#firstId1").val(data[i].firstId);
+                        $("#addLengthOne li:last-child").addClass("active");
+                    }
+                    if(data[i].firstName=="河岸整齐"){
+                        code2+='<li>';
+                        code2+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" class="ids">'+data[i].secondName+'</b>';
+                        code2+='<input onchange="changeScore()" type="number" value="" class="scoreIpt"><span>-</span>';
+                        code2+='</li>';
+                        $("#firstId2").val(data[i].firstId);
+                        $("#addLengthTwo").html(code2);
+                        $("#addLengthTwo li:last-child").addClass("active");
+                    }
+                    if(data[i].firstName=="河道通畅"){
+                        code3+='<li>';
+                        code3+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" class="ids">'+data[i].secondName+'</b>';
+                        code3+='<input onchange="changeScore()" type="number" value="" class="scoreIpt"><span>-</span>';
+                        code3+='</li>';
+                        $("#firstId3").val(data[i].firstId);
+                        $("#addLengthThree").html(code3);
+                        $("#addLengthThree li:last-child").addClass("active");;
+                    }
+                    if(data[i].firstName=="河道水质"){
+                        code4+='<li>';
+                        code4+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" class="ids">'+data[i].secondName+'</b>';
+                        code4+='<input onchange="changeScore()" type="number" value="" class="scoreIpt"><span>-</span>';
+                        code4+='</li>';
+                        $("#firstId4").val(data[i].firstId);
+                        $("#addLengthFour").html(code4);
+                        $("#addLengthFour li:last-child").addClass("active");
+                    }
+                    $(".river-qj li:last-child").find("span").hide();
+                    $(".river-qj li:last-child").find("input.scoreIpt").hide();
+                }
+                $(".toggle li").click(function(){
+                    $(this).toggleClass("active");
+                    $(this).find("input").focus();
+                    $(this).parent().children().last().removeClass("active");
+                    changeScore();
+                })
+                $(".toggle li:last-child").click(function(){
+                    $(this).find("span").hide();
+                    $(this).find("input.scoreIpt").hide();
+                    $(this).parent().find("li").removeClass("active");
+                    $(this).addClass("active");
+                    changeScore();
+                })
+            });
+    }
+    $(".add-sm").click(function(){
+        $(this).prev().show();
+        $(this).hide();
+    })
+
+
+    var imgNum=0;
+    var files=[];
+    $("#imgUpload").change(function () {
+        var pic = $(this)[0].files[0];//获取input file控件选择的文件
+        preview_picture(pic);
+        ImgToBase64(pic, 720, function (base64) {
+            base64=base64.split(',')[base64.split(',').length - 1];
+            files.push(base64);//预览页面上预留一个img元素，载入base64
+            $(".add-img img")[0].width = 300;//设定宽高，不然会自动按照压缩过的图片宽高设定，有可能超出预想的范围。
+            //直接利用ajax上传base64到服务器，完毕
+        });
+        console.log(files);
+    })
+
+    // $("#imgUpload").change(function(){
+    //   var pic=this.files[0];
+    //   preview_picture(pic);
+    //     console.log(imgNum);
+    // })
+    function preview_picture(pic){
+        imgNum++;
+        var r=new FileReader();
+        r.readAsDataURL(pic);
+        r.onload=function(e){
+            var code="";
+            code+='<li><img id='+imgNum+' src='+this.result+'><a class="remove">-</a></li>';
+            if(imgNum<4){
+                $(".add-img").append(code);
+            }else{
+                imgNum--;
+                layer.open({
+                    content: '最多上传3张图片！',
+                    skin: 'msg',
+                    time:1
+                });
+            }
+            // 图片删除
+            $(".remove").click(function() {
+                var _this=$(this);
+                layer.open({
+                    content: '确定要删除吗？',
+                    btn: ['删除', '取消'],
+                    skin: 'footer',
+                    yes: function(index) {
+                        imgNum--;
+                        _this.parent().remove();
+                        files.splice(imgNum,1);
+                        layer.open({
+                            content: '删除成功！',
+                            skin: 'msg',
+                            time:1
+                        });
+                        console.log(files);
+                    }
+                });
+            })
+        }
+    }
+
+</script>
+</html>

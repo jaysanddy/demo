@@ -1,0 +1,46 @@
+package com.vk.controller;
+
+
+
+import com.vk.security.UserDetail;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+
+
+/**
+ * Created by wj on 18-4-18.
+ */
+@Controller
+@RequestMapping(value = "page")
+public class PageController {
+
+    @RequestMapping("createRecord")
+    public String createRecord(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("areaId",userDetail.getAreaId());
+        return "inspection_mobile/create_record.html";
+    }
+
+    @RequestMapping("recordList")
+    public String recordList(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userId",userDetail.getId());
+        return "inspection_mobile/record_list.html";
+    }
+
+    @RequestMapping("inspectionIndex")
+    public String inspectionIndex(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userId",userDetail.getId());
+        return "inspection_mobile/index.html";
+    }
+
+    @RequestMapping("recordDetail")
+    public String recordDetail(HttpServletRequest request,Integer recordId ){
+        request.setAttribute("recordId",recordId);
+        return "inspection_mobile/record_detail.html";
+    }
+}

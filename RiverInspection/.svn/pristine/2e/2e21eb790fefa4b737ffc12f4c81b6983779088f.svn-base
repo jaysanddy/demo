@@ -1,0 +1,105 @@
+package com.vk.controller;
+
+import com.vk.model.*;
+import com.vk.security.UserDetail;
+import com.vk.service.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+/**
+ * Created by wj on 18-4-17.
+ */
+@Controller
+public class SystemController {
+
+    @Resource
+    private RoleService roleService;
+
+
+    @Value("${project.environment}")
+    private String projectEnv;
+
+    @RequestMapping(value = "/")
+    public String indexDefault(HttpServletRequest request){
+        String path = pageJump(request);
+        return path;
+    }
+
+    @RequestMapping(value = "/login")
+    public String login(){
+        return "sys/login";
+    }
+
+    @RequestMapping(value = "/logout")
+    public String logout(){
+        return "sys/login";
+    }
+
+    @RequestMapping(value = "/index")
+    public String index(HttpServletRequest request){
+        String path = pageJump(request);
+        return path;
+    }
+
+    public String pageJump(HttpServletRequest request){
+        String path = null;
+        UserDetail userDetail = null;
+        try {
+            userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }catch (ClassCastException cce){
+            return "sys/login";
+        }
+        List<Role> roles = roleService.selectRolesByUserId(userDetail.getId());
+        Role role = roles.get(0);
+        String ua = request.getHeader("user-agent").toLowerCase();
+        boolean isMobile = false;
+        if(projectEnv.equals("prod")){
+            isMobile = ua.contains("android");
+        }else if(projectEnv.equals("test")){
+            isMobile = ua.contains("android");
+        }else if(projectEnv.equals("dev")){
+            isMobile = ua.contains("android") || ua.contains("linux");
+        }else {
+            isMobile = ua.contains("android");
+        }
+
+        request.setAttribute("userId",userDetail.getId());
+
+        if(isMobile&&role.getId()==RoleEnum.ROLE_ADMIN||role.getId()==RoleEnum.ROLE_INSPECTOR){//APP端
+            switch (role.getId()){
+                case RoleEnum.ROLE_ADMIN:   //普通管理员
+
+                    path = "admin/mobile/index";
+                    break;
+                case RoleEnum.ROLE_SUPER_ADMIN:   //超级管理员
+
+                    path = "admin_super/mobile/index";
+                    break;
+                case RoleEnum.ROLE_INSPECTOR:
+                    path = "inspection_mobile/index";
+                    break;
+                default:
+                    path = "sys/404.html";
+            }
+        }else {//后台页面跳转
+            switch (role.getId()){
+                case RoleEnum.ROLE_SUPER_ADMIN:   //超级管理员
+                    path = "admin_super/back/index";
+                    break;
+                case RoleEnum.ROLE_ADMIN:
+                    path = "admin/back/index";
+                    break;
+                default:
+                    path = "sys/404.html";
+            }
+        }
+        return path;
+    }
+
+}

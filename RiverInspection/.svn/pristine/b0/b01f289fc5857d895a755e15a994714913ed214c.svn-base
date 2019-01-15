@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_jqgrid.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:02 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>志愿者列表</title>
+    <meta name="keywords" content="用户列表"/>
+    <meta name="description" content="用户列表"/>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+
+    <!-- jqgrid-->
+    <link href="/../css/plugins/jqgrid/ui.jqgridffe4.css?0820" rel="stylesheet">
+
+    <link href="/../css/animate.min.css" rel="stylesheet">
+    <link href="/../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+    <style>
+        /* Additional style to fix warning dialog position */
+
+        #alertmod_table_list_2 {
+            top: 900px !important;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>用户列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <button type="button" class="btn btn-w-s btn-success" style="margin:10px 0px 20px 5px" onclick="window.location.href='../page/addUser'">新增用户</button>
+                    <div class="jqGrid_wrapper">
+                        <input id="realName" placeholder="请输入真实姓名" style="margin-bottom:15px;padding:0 10px;height:35px;border-radius: 3px;width:200px;border:1px solid #eee;margin-right:10px;">
+                        <select id="roleId" style="margin-bottom:15px;padding:0 10px;height:35px;border-radius: 3px;width:200px;border:1px solid #eee;margin-right:10px;">
+                            <option value="">请选择</option>
+                            <option value="2">普通管理员</option>
+                            <option value="3">巡查员</option>
+                        </select>
+                        <button type="button" id="searchButton" class="btn btn-w-s btn-danger">查询</button>
+                        <table id="table_list_1"></table>
+                        <div id="pager_list_1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="areaId" th:value="${areaId}">
+<script src="/../js/jquery.min.js?v=2.1.4"></script>
+<script src="/../js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/../js/plugins/peity/jquery.peity.min.js"></script>
+<script src="/../js/plugins/jqgrid/i18n/grid.locale-cnffe4.js?0820"></script>
+<script src="/../js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
+<script src="/../js/content.min.js?v=1.0.0"></script>
+<script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="../js/util/dateutil.js"></script>
+<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+<script>
+    var url = "../user/getUserByAreaId";
+    $(document).ready(function(){
+        $.jgrid.defaults.styleUI="Bootstrap";
+        var areaId = $("#areaId").val();
+        var categoryId = $("#categoryId").val();
+        $("#table_list_1").jqGrid(
+            {
+                url:url,
+                type:'POST',
+                datatype:"JSON",
+                height:500,
+                autowidth:true,
+                shrinkToFit:true,
+                rowNum:15,
+                rowList:[15,30],
+                jsonReader: {
+                    root:"data", page:"page","total":"totalPages",records:"totalCount", repeatitems:false
+                },
+                colNames:["id","姓名","真实姓名","手机","权限","创建时间","操作"],
+                colModel:[
+                    {name:"id",index:"id",width:60,sorttype:"int",hidden:true},
+                    {name:"name",index:"name",width:100},
+                    {name:"realname",index:"realname",width:100},
+                    {name:"phone",index:"phone",width:100},
+                    {name:"roleName",index:"roleName",width:60},
+                    {name:"createTime",index:"createTime",width:60,
+                        formatter: function (cellvalue, options, rowObject) {
+                            return getFormatDateByLong(rowObject.createTime,'yyyy-MM-dd')
+                        }
+                    },
+                    {
+                        label: '启用', name: 'flag', index: 'flag', width: 45, align: 'center',
+                        formatter: function (cellvalue, options, rowObject) {
+                            console.log(rowObject);
+                            return "<a style='margin-left: 10px'  onclick='onClickEditVol("+rowObject.id+")'>编辑</a>";
+                        }
+                    }
+                ],
+                pager:"#pager_list_1",
+                viewrecords:true,
+//                caption:"jqGrid 示例1",
+                hidegrid:false
+            });
+        $(window).bind("resize",function(){
+            var width=$(".jqGrid_wrapper").width();
+            $("#table_list_1").setGridWidth(width);
+            $("#table_list_2").setGridWidth(width)
+        })
+    });
+
+    function onClickEditVol(id) {
+//        window.open("../page/volUserEdit?volId="+id);
+        window.location.href="../page/editUser?userId="+id;
+    };
+
+
+    function onClickUserRiver(id) {
+//        window.open("../page/volUserRiverManager?volId="+id);
+        window.location.href="../page/volUserRiverManager?volId="+id;
+    };
+
+    $("#searchButton").click(function(){
+        var realName = $("#realName").val().trim();
+        var roleId = $("#roleId").val().trim();
+        var postJson = {roleId:roleId,realName:realName};
+
+        //传入查询条件参数
+        $("#table_list_1").jqGrid("setGridParam",{postData:postJson});
+        //每次提出新的查询都转到第一页
+        $("#table_list_1").jqGrid("setGridParam",{page:1});
+        //提交post并刷新表格
+        $("#table_list_1").jqGrid("setGridParam",{url:url}).trigger("reloadGrid");
+    });
+</script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_jqgrid.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:02 GMT -->
+</html>

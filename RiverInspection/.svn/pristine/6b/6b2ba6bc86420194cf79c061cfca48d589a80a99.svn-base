@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="renderer" content="webkit" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no" />
+	<title>问题上传</title>
+	<script type="text/javascript" src="../js/zepto.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/stylePc.css" />
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wwz42MgLZ6vWNKqvGR109ZEcCTiOfggd"></script>
+</head>
+<body class="pb12 fadeIn animated">
+<div class="load" style="display: none">
+	<img src="../img/timg.gif">
+</div>
+<div class="content" style="background:#fff;padding:15px">
+	<form class="upload">
+		<div class="list">
+			<div class="item">
+				<span>标题</span>
+				<input id="title" type="button" class="form-control" value=""/>
+			</div>
+			<div class="item">
+				<span>河道名称</span>
+				<input id="riverName" type="button" class="form-control" value=""/>
+			</div>
+			<div class="item">
+				<span>所属编号</span>
+				<input id="num" type="button" class="form-control" value=""/>
+			</div>
+			<div class="item">
+				<span>所属乡镇</span>
+				<input id="towns" type="button" class="form-control" value=""/>
+			</div>
+			<div class="item">
+				<span>所属位置</span>
+				<input id="adr" type="button" class="form-control" value=""/>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="list">
+			<div class="item" style="width:100%">
+				<p>河道评定：</p>
+				<ul class="river-pd">
+					<li>优质 <input type="hidden" value="0"></li>
+					<li>一般 <input type="hidden" value="1"></li>
+					<li>较差 <input type="hidden" value="2"></li>
+				</ul>
+			</div>
+			<div class="item no-border" style="width:100%">
+				河道描述：
+				<textarea id="des" class="form-control-text" readonly></textarea>
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<div class="list">
+			<div class="item no-border">
+				<p>现场照片：</p>
+				<ul class="add-img" id="Gallery">
+
+				</ul>
+				<!--<ul class="add-img" id="addImg">-->
+				<!--<li><input id="imgUpload" type="file"></li>-->
+				<!--</ul>-->
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河面清洁<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河面清洁问题 <input id="firstId1" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthOne">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: block">
+						<p>填写说明</p>
+						<textarea id="des1" class="form-control-text" placeholder="备注内容" readonly></textarea>
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河岸整齐<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河岸整齐问题<input id="firstId2" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthTwo">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: block">
+						<p>填写说明</p>
+						<textarea id="des2" class="form-control-text" placeholder="备注内容" readonly></textarea>
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河道通畅<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河道通畅问题<input id="firstId3" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthThree">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: block">
+						<p>填写说明</p>
+						<textarea id="des3" class="form-control-text" placeholder="备注内容" readonly></textarea>
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河道水质<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+				<dd>
+					<div class="item">
+						<p>请选择河道水质问题<input id="firstId4" type="hidden"></p>
+						<ul class="river-qj toggle" id="addLengthFour">
+
+						</ul>
+					</div>
+					<div class="item no-border" style="display: block">
+						<p>填写说明</p>
+						<textarea id="des4" class="form-control-text" placeholder="备注内容" readonly></textarea>
+					</div>
+				</dd>
+			</dl>
+			<div class="clear"></div>
+		</div>
+
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>河道总分 <b class="right green" id="score"></b></dt>
+
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+
+			<div class="item no-border">
+				<p>现场照片：</p>
+				<div id="GalleryRemove">
+
+				</div>
+				<ul class="add-img" id="recheckGallery">
+
+				</ul>
+				<!--<ul class="add-img" id="addImg">-->
+				<!--<li><input id="imgUpload" type="file"></li>-->
+				<!--</ul>-->
+			</div>
+			<div class="item no-border" style="width:100%">
+				复查描述：
+				<textarea id="recheckDes" class="form-control-text"></textarea>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<dl class="o-h">
+				<dt><span>|</span>是否完成整改
+				<div class="right check-box">
+					<a id="yes">是 <input type="hidden" value="0"></a>
+					<a id="no">否 <input type="hidden" value="1" ></a>
+				</div>
+				</dt>
+			</dl>
+			<div class="clear"></div>
+		</div>
+		<div class="list">
+			<input type="button" class="btn-comp" value="完成问题" onclick="subForm(5)"/>
+			<div class="clear"></div>
+		</div>
+		<input type="hidden" id="status">
+	</form>
+</div>
+<!-- 增加说明 -->
+<div class="add-des-layer"></div>
+<input type="hidden" id="areaId" th:value="${areaId}">
+<input type="hidden" id="recordId" th:value="${recordId}">
+<input type="hidden" id="resultId">
+</body>
+<script>
+    getDetail();
+    getSecond();
+    var imgNum=0;
+    $("#imgUpload").change(function(){
+        var pic=this.files[0];
+        preview_picture(pic);
+    })
+    function preview_picture(pic){
+        imgNum++;
+        var r=new FileReader();
+        r.readAsDataURL(pic);
+        r.onload=function(e){
+            var code="";
+            code+='<li><img id='+imgNum+' src='+this.result+'><a class="remove">-</a></li>';
+            $("#addImg").append(code);
+            // 图片删除
+            $(".remove").click(function() {
+                var _this=$(this);
+
+				_this.parent().remove();
+
+            })
+        }
+    }
+    function getSecond(){
+        var userId=$("#userId").val();
+        $.post("/riverQuestion/getAllRiverQuestion",{},
+            function(data){
+				console.log("11111111111111111111111111111111111111111")
+				console.log(data)
+                var code1='';
+                var code2='';
+                var code3='';
+                var code4='';
+                data=data.data;
+                for(var i=0;i<data.length;i++){
+                    if(data[i].firstName=="河面清洁"){
+                        code1+='<li>';
+                        code1+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'" class="ids">'+data[i].secondName+'</b>';
+                        code1+='<input onchange="changeScore()" type="text" value="" class="scoreIpt"><span>-</span>';
+                        code1+='</li>';
+                        $("#addLengthOne").html(code1);
+                        $("#firstId1").val(data[i].firstId);
+                    }
+                    if(data[i].firstName=="河岸整齐"){
+                        code2+='<li>';
+                        code2+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'"  class="ids">'+data[i].secondName+'</b>';
+                        code2+='<input onchange="changeScore()" type="text" value="" class="scoreIpt"><span>-</span>';
+                        code2+='</li>';
+                        $("#firstId2").val(data[i].firstId);
+                        $("#addLengthTwo").html(code2);
+                    }
+                    if(data[i].firstName=="河道通畅"){
+                        code3+='<li>';
+                        code3+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'"  class="ids">'+data[i].secondName+'</b>';
+                        code3+='<input onchange="changeScore()" type="text" value="" class="scoreIpt"><span>-</span>';
+                        code3+='</li>';
+                        $("#firstId3").val(data[i].firstId);
+                        $("#addLengthThree").html(code3);
+                    }
+                    if(data[i].firstName=="河道水质"){
+                        code4+='<li>';
+                        code4+='<b class="name"><input type="hidden" value="'+data[i].secondId+'" id="'+data[i].secondId+'"  class="ids">'+data[i].secondName+'</b>';
+                        code4+='<input onchange="changeScore()" type="text" value="" class="scoreIpt"><span>-</span>';
+                        code4+='</li>';
+                        $("#firstId4").val(data[i].firstId);
+                        $("#addLengthFour").html(code4);
+                    }
+                    $(".river-qj li:last-child").find("span").hide();
+                    $(".river-qj li:last-child").find("input.scoreIpt").hide();
+					
+                }
+
+            });
+    }
+    // 图片删除
+    function imgRemove(index) {
+        index++;
+
+		$('#recheckGallery li:nth-child('+index+')').remove();
+		$('#GalleryRemove a:nth-child('+index+')').remove();
+
+    }
+    function getDetail(){
+        var recordId=$("#recordId").val();
+        $.post("/inspectionRecord/getRecordById",{
+                recordId:recordId
+            },
+            function(data){
+				console.log("--------------------------------------------");
+                var result=data.data;
+                console.log(result);
+                $("#code").val(result.code);
+                $("#title").val(result.title);
+                $("#riverName").val(result.riverName);
+                $("#num").val(result.riverNo);
+                $("#towns").val(result.towns);
+                $("#adr").text(result.address);
+                $("#lat").val(result.lat);
+                $("#lng").val(result.lng);
+                $("#des").val(result.context);
+                $("#status").val(result.status);
+                $("#firstAssess").val(result.firstAssess);
+                $("#riverId").val(result.riverId);
+                $("#resultId").val(result.results.id);
+                $("#recheckDes").text(result.results.context);
+                if(result.rectification==1){
+                    $(".check-box a").removeClass("active");
+                    $(".check-box a:nth-child(2)").addClass("active");
+                    $(".btn-primary").show();
+				}else{
+                    $(".check-box a").removeClass("active");
+                    $(".check-box a:nth-child(1)").addClass("active");
+                    $(".btn-comp").show();
+				}
+                var firstAssess=result.firstAssess;
+				
+				console.log(firstAssess);
+                firstAssess++;
+                $('.river-pd li:nth-child('+firstAssess+')').addClass("active");
+//                   图片
+                var imgList="";
+                for(var i=0;i<result.files.length;i++){
+                    imgList+='<li><img src="../'+result.files[i].file_name+'" data-w="300" data-h="425"></li>';
+                }
+                $("#Gallery").html(imgList);
+
+                var imgList1="";
+                var imgRemove="";
+				if (result.results.length == 0) {
+					console.log("无现场照片")
+				} else{
+					for(var j=0;j<result.results[0].resultFiles.length;j++){
+						imgList1+='<li><img src="../'+result.results[0].resultFiles[j].fileName+'" data-w="300" data-h="425"></li>';
+						imgRemove+='<a class="remove" onclick="imgRemove('+j+')">-</a>';
+					}
+				}
+                $("#recheckGallery").html(imgList1);
+                $("#GalleryRemove").html(imgRemove);
+
+                $("#score").text(result.score);
+//                    河流问题
+                var riverQuestions=result.riverQuestions;
+				console.log("22222222222222222222222222222222222222222222")
+				console.log(riverQuestions[0].text)
+                $("#des1").text(riverQuestions[0].text);
+                $("#des2").text(riverQuestions[1].text);
+                $("#des3").text(riverQuestions[2].text);
+                $("#des4").text(riverQuestions[3].text);
+                var _quest0=riverQuestions[0].secondQuestions;
+                var _quest1=riverQuestions[1].secondQuestions;
+                var _quest2=riverQuestions[2].secondQuestions;
+                var _quest3=riverQuestions[3].secondQuestions;
+                if(_quest0!=''){
+                    for(var i=0;i<_quest0.length;i++){
+                        //twoQuestionId
+                        $('#'+_quest0[i].twoQuestionId+'').parent().parent().addClass("active");
+                        $('#'+_quest0[i].twoQuestionId+'').parent().next().val(_quest0[i].score);
+                    }
+                }
+                if(_quest1!=''){
+                    for(var i=0;i<_quest1.length;i++){
+                        //twoQuestionId
+                        $('#'+_quest1[i].twoQuestionId+'').parent().parent().addClass("active");
+                        $('#'+_quest1[i].twoQuestionId+'').parent().next().val(_quest1[i].score);
+                    }
+                }
+                if(_quest2!=''){
+                    for(var i=0;i<_quest2.length;i++){
+                        //twoQuestionId
+                        $('#'+_quest2[i].twoQuestionId+'').parent().parent().addClass("active");
+                        $('#'+_quest2[i].twoQuestionId+'').parent().next().val(_quest2[i].score);
+                    }
+                }
+                if(_quest3!=''){
+                    for(var i=0;i<_quest3.length;i++){
+                        //twoQuestionId
+                        $('#'+_quest3[i].twoQuestionId+'').parent().parent().addClass("active");
+                        $('#'+_quest3[i].twoQuestionId+'').parent().next().val(_quest3[i].score);
+                    }
+                }
+            });
+
+    }
+    $(".add-sm").click(function(){
+        $(this).prev().show();
+        $(this).hide();
+    })
+	$(".check-box a").click(function(){
+	    $(this).addClass("active");
+	    $(this).siblings().removeClass("active");
+	})
+    // 提交表单
+    function subForm(s){
+        var recordId=$("#recordId").val();
+        var status=s;
+		var resultId=$("#resultId").val();
+        var context=$("#recheckDes").text();
+        var rectification=$(".check-box a.active input").val();
+        var photoFiles=[];
+        $("#recheckGallery li").each(function(){
+            var imgSrc=$(this).find("img").attr("src");
+            if(imgSrc!=undefined){
+                imgSrc=imgSrc.split('/')[imgSrc.split('/').length - 1];
+                photoFiles.push(imgSrc);
+            }
+        });
+
+        if(context==""){
+            alert("请输入复查描述");
+            return false;
+        }else{
+				$.post("/inspectionReuslt/saveResult",
+					{
+						recordId:recordId,
+						status:status,
+						photoFiles:JSON.stringify(photoFiles),
+                        context:context,
+                        recordStatus:rectification,
+						resultId:resultId
+					},
+					function(data,status){
+						alert("上传成功");
+						console.log(data);
+						console.log(photoFiles);
+						window.history.back();
+					}
+				);
+
+        }
+    }
+
+    // 分数监听
+    function changeScore(){
+        var numOne=0;var numTwo=0;var numThree=0;var numFour=0;
+        $("#addLengthOne li.active").each(function(){
+            numOne+=Number($(this).find("input.scoreIpt").val());
+        });
+        $("#addLengthTwo li.active").each(function(){
+            numTwo+=Number($(this).find("input.scoreIpt").val());
+        });
+        $("#addLengthThree li.active").each(function(){
+            numThree+=Number($(this).find("input.scoreIpt").val());
+        });
+        $("#addLengthFour li.active").each(function(){
+            numFour+=Number($(this).find("input.scoreIpt").val());
+        });
+        var score=100-numOne-numTwo-numThree-numFour;
+
+        // 大于80分绿色
+        $("#score").css("color","#6BBB88");
+        if(score>79){
+        }else if(score>59&&score<80){
+            // 60-80橙色
+            $("#score").css("color","#ff9900");
+        }else if(score<60){
+            // 60以下红色
+            $("#score").css("color","#f00");
+        }
+        $("#score").text(score);
+    }
+</script>
+</html>

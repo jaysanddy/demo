@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vk.mapper.UserRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.vk.model.UserRoleKey" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <id column="role_id" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.vk.model.UserRoleKey" >
+    delete from vk_user_role
+    where user_id = #{userId,jdbcType=INTEGER}
+      and role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vk.model.UserRoleKey" >
+    insert into vk_user_role (user_id, role_id)
+    values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vk.model.UserRoleKey" >
+    insert into vk_user_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+
+  <!-- 分割线 -->
+  <select id="getUserRole" parameterType="com.vk.request.UserRoleRequest" resultType="com.vk.response.UserRoleResponse">
+    select u.user_id userId,u.role_id roleId,r.role_name roleName from vk_user_role as u left join vk_role as r on u.role_id = r.id
+    <where>
+      <if test="userId != null">
+        user_id = #{userId}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,0 +1,38 @@
+package com.vk.service.impl;
+
+import com.vk.mapper.UserMapper;
+import com.vk.model.User;
+import com.vk.response.Result;
+import com.vk.service.UserService;
+import com.vk.util.MD5;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ * Created by wj on 18-5-5.
+ */
+
+@Service
+public class UserServiceImpl implements UserService{
+
+    @Resource
+    private UserMapper userMapper;
+
+    @Override
+    public Result updatePassword(Integer userId, String oldPassword, String newPassword) {
+        Result result = new Result(Result.FAILED,null,"error");
+        User user = userMapper.selectByPrimaryKey(userId);
+        String oldPwd = user.getPassword();
+        if(oldPwd.equals(MD5.getMD5(oldPassword))){
+            String newMD5Pwd = MD5.getMD5(newPassword);
+            user.setPassword(newMD5Pwd);
+            userMapper.updateByPrimaryKeySelective(user);
+            result.setMsg("密码修改成功！");
+            result.setCode(Result.SUCCESS);
+        }else {
+            result.setMsg("密码修改失败,与原密码不一致！");
+        }
+        return result;
+    }
+}

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>问题记录</title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link rel="stylesheet" type="text/css" href="../css/miniMobile.css"/>
+		<script type="text/javascript" src="../js/zepto.min.js"></script>
+		<script type="text/javascript" src="../js/miniMobile.js"></script>
+		<link rel="stylesheet" type="text/css" href="../plugins/fonticon/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+	<body class="fadeIn animated">
+	<div class="load">
+		<img src="../img/timg.gif">
+	</div>
+		<section class="clearfix padd-btm">
+       <div class="item-box" id="list">
+
+       </div>
+		<!--<button class="btn btn-block" id="loadMore">加载更多</button>-->
+		</section>
+
+		<nav class="bottomNav clearfix">
+			 <div class="w5">
+        <a onclick="window.location.href='../page/inspectionIndex'">
+          <i class="icon-home"></i>
+          <p>问题复查</p>
+        </a>
+      </div>
+      <div class="w5 active">
+        <a href="index.html" class="right">
+          <i class="icon-other"></i>
+          <p>问题记录</p>
+        </a>
+      </div>
+		</nav>
+    <div class="add-btn">
+      <a href="../page/createRecord">
+        <img src="../img/add.png">
+      </a>
+    </div>
+	</body>
+    <input type="hidden" id="areaId" th:value="${areaId}">
+
+    <script>
+        var page=1;
+        var rows=80;
+        getList();
+//		$("#loadMore").click(function(){
+//		    page++;
+//		    getList();
+//		})
+        function getList(){
+            var userId=$("#userId").val();
+            $.post("/inspectionRecord/getRecord",
+                {
+                    states:"0,1,2,3,5",
+                    userId:userId,
+                    page:page,
+                    rows:rows
+                },
+                function(data){
+                    var code='';
+                    data=data.data;
+                    for(var i=0;i<data.length;i++){
+                        code+='<a href="../page/recordDetail?recordId='+data[i].id+'">';
+                        code+='<div class="item-left">';
+                        code+='<h4 class="nowrap">'+data[i].title+'</h4>';
+                        code+='<p class="nowrap">'+data[i].towns+'</p>';
+                        var time=data[i].createTime;
+                        var d = new Date(time);
+                        var times=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+                        code+='<p>'+times+'</p>';
+                        code+='</div>';
+                        code+='<div class="item-right">';
+                        if(data[i].status=="0"){
+                            code+='<div class="state1"></div>';
+                        }else if(data[i].status=="1"){
+                            code+='<div class="state2"></div>';
+                        }else if(data[i].status=="2"){
+                            code+='<div class="state3"></div>';
+                        }else if(data[i].status=="3"){
+                            code+='<div class="state33"></div>';
+                        }else if(data[i].status=="5"){
+                            code+='<div class="state4"></div>';
+                        }
+                        code+='</div>';
+                        code+='</a>';
+                    }
+                    $("#list").append(code);
+                });
+        }
+    </script>
+</html>

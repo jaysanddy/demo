@@ -1,0 +1,26 @@
+package com.vk.mapper;
+
+import com.vk.model.River;
+import org.apache.ibatis.annotations.Param;
+import org.omg.CORBA.INTERNAL;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public interface RiverMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(River record);
+
+    int insertSelective(River record);
+
+    River selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(River record);
+
+    int updateByPrimaryKey(River record);
+
+    List<River> getByteRivers(River record);
+}

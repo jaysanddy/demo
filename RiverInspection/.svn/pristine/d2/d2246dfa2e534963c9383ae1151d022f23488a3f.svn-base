@@ -1,0 +1,14 @@
+package com.vk.type;
+
+/**
+ * Created by wj on 18-6-13.
+ */
+public class PointCategoryType {
+
+    public static final int DAILY_LOGIN = 1; //每日登录
+
+    public static final int CHECK_RIVER = 2; //志愿者巡河
+
+    public static final int SUGGESTION_PUBLISH = 3; //上传问题
+
+}

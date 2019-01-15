@@ -1,0 +1,366 @@
+package com.vk.model;
+
+import java.util.Date;
+import java.util.List;
+
+public class InspectionRecord {
+    private Integer id;
+
+    private String riverName;
+
+    private String riverNo;
+
+    private Integer riverId;
+
+    private String title;
+
+    private Integer areaId;
+
+    private String towns;
+
+    private String inspectionSite;
+
+    private String signPlace;
+
+    private Integer rectification;
+
+    private Date inspectionTime;
+
+    private Integer firstAssess;
+
+    private String firstAssessCn;
+
+    private String context;
+
+    private Integer score;
+
+    private String scoreCn;
+
+    private Integer editUserId;
+
+    private String editUserName;
+
+    private Date editTime;
+
+    private String creator;
+
+    private Integer creatorId;
+
+    private Date createTime;
+
+    private String lat;
+
+    private String lng;
+
+    private String address;
+
+    private String status;
+
+    private String code;
+
+    private String taskId;
+
+    private Integer alterStatus;
+
+    private List<InspectionReform> reform;
+
+    private List<InspectionStatus> report;
+
+    private List<RiverQuestion> riverQuestions;
+
+    private List<InspectionFile> files;
+
+    private List<InspectionResult> results;
+
+    private List<Integer> states;
+
+    private String createTimeCn;
+
+    public String getCreateTimeCn() {
+        return createTimeCn;
+    }
+
+    public void setCreateTimeCn(String createTimeCn) {
+        this.createTimeCn = createTimeCn;
+    }
+
+    public String getScoreCn() {
+        return scoreCn;
+    }
+
+    public void setScoreCn(String scoreCn) {
+        this.scoreCn = scoreCn;
+    }
+
+    public String getFirstAssessCn() {
+        return firstAssessCn;
+    }
+
+    public void setFirstAssessCn(String firstAssessCn) {
+        this.firstAssessCn = firstAssessCn;
+    }
+
+    public List<InspectionResult> getResults() {
+        return results;
+    }
+
+    public void setResults(List<InspectionResult> results) {
+        this.results = results;
+    }
+
+    public List<InspectionFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<InspectionFile> files) {
+        this.files = files;
+    }
+
+    public List<Integer> getStates() {
+        return states;
+    }
+
+    public void setStates(List<Integer> states) {
+        this.states = states;
+    }
+
+    public List<RiverQuestion> getRiverQuestions() {
+        return riverQuestions;
+    }
+
+    public void setRiverQuestions(List<RiverQuestion> riverQuestions) {
+        this.riverQuestions = riverQuestions;
+    }
+
+    public List<InspectionReform> getReform() {
+        return reform;
+    }
+
+    public void setReform(List<InspectionReform> reform) {
+        this.reform = reform;
+    }
+
+    public List<InspectionStatus> getReport() {
+        return report;
+    }
+
+    public void setReport(List<InspectionStatus> report) {
+        this.report = report;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRiverName() {
+        return riverName;
+    }
+
+    public void setRiverName(String riverName) {
+        this.riverName = riverName == null ? null : riverName.trim();
+    }
+
+    public String getRiverNo() {
+        return riverNo;
+    }
+
+    public void setRiverNo(String riverNo) {
+        this.riverNo = riverNo == null ? null : riverNo.trim();
+    }
+
+    public Integer getRiverId() {
+        return riverId;
+    }
+
+    public void setRiverId(Integer riverId) {
+        this.riverId = riverId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
+    }
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
+    }
+
+    public String getTowns() {
+        return towns;
+    }
+
+    public void setTowns(String towns) {
+        this.towns = towns == null ? null : towns.trim();
+    }
+
+    public String getInspectionSite() {
+        return inspectionSite;
+    }
+
+    public void setInspectionSite(String inspectionSite) {
+        this.inspectionSite = inspectionSite == null ? null : inspectionSite.trim();
+    }
+
+    public String getSignPlace() {
+        return signPlace;
+    }
+
+    public void setSignPlace(String signPlace) {
+        this.signPlace = signPlace == null ? null : signPlace.trim();
+    }
+
+    public Integer getRectification() {
+        return rectification;
+    }
+
+    public void setRectification(Integer rectification) {
+        this.rectification = rectification;
+    }
+
+    public Date getInspectionTime() {
+        return inspectionTime;
+    }
+
+    public void setInspectionTime(Date inspectionTime) {
+        this.inspectionTime = inspectionTime;
+    }
+
+    public Integer getFirstAssess() {
+        return firstAssess;
+    }
+
+    public void setFirstAssess(Integer firstAssess) {
+        this.firstAssess = firstAssess;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Integer getEditUserId() {
+        return editUserId;
+    }
+
+    public void setEditUserId(Integer editUserId) {
+        this.editUserId = editUserId;
+    }
+
+    public String getEditUserName() {
+        return editUserName;
+    }
+
+    public void setEditUserName(String editUserName) {
+        this.editUserName = editUserName == null ? null : editUserName.trim();
+    }
+
+    public Date getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(Date editTime) {
+        this.editTime = editTime;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat == null ? null : lat.trim();
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng == null ? null : lng.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code == null ? null : code.trim();
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId == null ? null : taskId.trim();
+    }
+
+    public Integer getAlterStatus() {
+        return alterStatus;
+    }
+
+    public void setAlterStatus(Integer alterStatus) {
+        this.alterStatus = alterStatus;
+    }
+}

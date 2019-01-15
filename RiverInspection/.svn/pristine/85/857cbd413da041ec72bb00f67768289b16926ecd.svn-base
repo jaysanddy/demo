@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vk.mapper.InspectionRecordMapper" >
+  <resultMap id="BaseResultAllMap" type="com.vk.model.InspectionRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="river_name" property="riverName" jdbcType="VARCHAR" />
+    <result column="river_no" property="riverNo" jdbcType="VARCHAR" />
+    <result column="river_id" property="riverId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="towns" property="towns" jdbcType="VARCHAR" />
+    <result column="inspection_site" property="inspectionSite" jdbcType="VARCHAR" />
+    <result column="sign_place" property="signPlace" jdbcType="VARCHAR" />
+    <result column="rectification" property="rectification" jdbcType="INTEGER" />
+    <result column="inspection_time" property="inspectionTime" jdbcType="TIMESTAMP" />
+    <result column="first_assess" property="firstAssess" jdbcType="INTEGER" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="edit_user_id" property="editUserId" jdbcType="INTEGER" />
+    <result column="edit_user_name" property="editUserName" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <collection property="reform" column="recordId=id" javaType="ArrayList"
+                ofType="Map" select="com.vk.mapper.InspectionReformMapper.getReformById"/>
+    <collection property="report" column="recordId=id" javaType="ArrayList"
+                ofType="Map" select="com.vk.mapper.InspectionStatusMapper.getStatus"/>
+    <collection property="results" column="recordId=id" javaType="ArrayList"
+                ofType="Map" select="com.vk.mapper.InspectionReusltMapper.getResult"/>
+    <collection property="files" column="recordId=id" javaType="ArrayList"
+                ofType="Map" select="com.vk.mapper.InspectionFileMapper.getFiles"/>
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.vk.model.InspectionRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="river_name" property="riverName" jdbcType="VARCHAR" />
+    <result column="river_no" property="riverNo" jdbcType="VARCHAR" />
+    <result column="river_id" property="riverId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="towns" property="towns" jdbcType="VARCHAR" />
+    <result column="inspection_site" property="inspectionSite" jdbcType="VARCHAR" />
+    <result column="sign_place" property="signPlace" jdbcType="VARCHAR" />
+    <result column="rectification" property="rectification" jdbcType="INTEGER" />
+    <result column="inspection_time" property="inspectionTime" jdbcType="TIMESTAMP" />
+    <result column="first_assess" property="firstAssess" jdbcType="INTEGER" />
+    <result column="context" property="context" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+    <result column="edit_user_id" property="editUserId" jdbcType="INTEGER" />
+    <result column="edit_user_name" property="editUserName" jdbcType="VARCHAR" />
+    <result column="edit_time" property="editTime" jdbcType="TIMESTAMP" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="creator_id" property="creatorId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="lat" property="lat" jdbcType="VARCHAR" />
+    <result column="lng" property="lng" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, river_name, river_no, river_id, title, area_id, towns, inspection_site, sign_place, 
+    rectification, inspection_time, first_assess, context, score, edit_user_id, edit_user_name,
+    edit_time, creator, creator_id, create_time, lat, lng, address, status, code, task_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vk_inspection_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vk_inspection_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vk.model.InspectionRecord" >
+    insert into vk_inspection_record (id, river_name, river_no, 
+      river_id, title, area_id, 
+      towns, inspection_site, sign_place, 
+      rectification, inspection_time, first_assess, 
+      context, score, edit_user_id,
+      edit_user_name, edit_time, creator, 
+      creator_id, create_time, lat, 
+      lng, address, status, 
+      code, task_id)
+    values (#{id,jdbcType=INTEGER}, #{riverName,jdbcType=VARCHAR}, #{riverNo,jdbcType=VARCHAR}, 
+      #{riverId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, 
+      #{towns,jdbcType=VARCHAR}, #{inspectionSite,jdbcType=VARCHAR}, #{signPlace,jdbcType=VARCHAR}, 
+      #{rectification,jdbcType=INTEGER}, #{inspectionTime,jdbcType=TIMESTAMP}, #{firstAssess,jdbcType=INTEGER}, 
+      #{context,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, #{editUserId,jdbcType=INTEGER},
+      #{editUserName,jdbcType=VARCHAR}, #{editTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR}, 
+      #{creatorId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{lat,jdbcType=VARCHAR}, 
+      #{lng,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{status},
+      #{code,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vk.model.InspectionRecord" useGeneratedKeys="true" keyProperty="id">
+    insert into vk_inspection_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="riverName != null" >
+        river_name,
+      </if>
+      <if test="riverNo != null" >
+        river_no,
+      </if>
+      <if test="riverId != null" >
+        river_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="towns != null" >
+        towns,
+      </if>
+      <if test="inspectionSite != null" >
+        inspection_site,
+      </if>
+      <if test="signPlace != null" >
+        sign_place,
+      </if>
+      <if test="rectification != null" >
+        rectification,
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time,
+      </if>
+      <if test="firstAssess != null" >
+        first_assess,
+      </if>
+      <if test="context != null" >
+        context,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="editUserId != null" >
+        edit_user_id,
+      </if>
+      <if test="editUserName != null" >
+        edit_user_name,
+      </if>
+      <if test="editTime != null" >
+        edit_time,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="creatorId != null" >
+        creator_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="riverName != null" >
+        #{riverName,jdbcType=VARCHAR},
+      </if>
+      <if test="riverNo != null" >
+        #{riverNo,jdbcType=VARCHAR},
+      </if>
+      <if test="riverId != null" >
+        #{riverId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="towns != null" >
+        #{towns,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionSite != null" >
+        #{inspectionSite,jdbcType=VARCHAR},
+      </if>
+      <if test="signPlace != null" >
+        #{signPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="rectification != null" >
+        #{rectification,jdbcType=INTEGER},
+      </if>
+      <if test="inspectionTime != null" >
+        #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstAssess != null" >
+        #{firstAssess,jdbcType=INTEGER},
+      </if>
+      <if test="context != null" >
+        #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="editUserId != null" >
+        #{editUserId,jdbcType=INTEGER},
+      </if>
+      <if test="editUserName != null" >
+        #{editUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null" >
+        #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null" >
+        #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vk.model.InspectionRecord" >
+    update vk_inspection_record
+    <set >
+      <if test="riverName != null" >
+        river_name = #{riverName,jdbcType=VARCHAR},
+      </if>
+      <if test="riverNo != null" >
+        river_no = #{riverNo,jdbcType=VARCHAR},
+      </if>
+      <if test="riverId != null" >
+        river_id = #{riverId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="towns != null" >
+        towns = #{towns,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionSite != null" >
+        inspection_site = #{inspectionSite,jdbcType=VARCHAR},
+      </if>
+      <if test="signPlace != null" >
+        sign_place = #{signPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="rectification != null" >
+        rectification = #{rectification,jdbcType=INTEGER},
+      </if>
+      <if test="inspectionTime != null" >
+        inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstAssess != null" >
+        first_assess = #{firstAssess,jdbcType=INTEGER},
+      </if>
+      <if test="context != null" >
+        context = #{context,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="editUserId != null" >
+        edit_user_id = #{editUserId,jdbcType=INTEGER},
+      </if>
+      <if test="editUserName != null" >
+        edit_user_name = #{editUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null" >
+        edit_time = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="creatorId != null" >
+        creator_id = #{creatorId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=VARCHAR},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vk.model.InspectionRecord" >
+    update vk_inspection_record
+    set river_name = #{riverName,jdbcType=VARCHAR},
+      river_no = #{riverNo,jdbcType=VARCHAR},
+      river_id = #{riverId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=INTEGER},
+      towns = #{towns,jdbcType=VARCHAR},
+      inspection_site = #{inspectionSite,jdbcType=VARCHAR},
+      sign_place = #{signPlace,jdbcType=VARCHAR},
+      rectification = #{rectification,jdbcType=INTEGER},
+      inspection_time = #{inspectionTime,jdbcType=TIMESTAMP},
+      first_assess = #{firstAssess,jdbcType=INTEGER},
+      context = #{context,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      edit_user_id = #{editUserId,jdbcType=INTEGER},
+      edit_user_name = #{editUserName,jdbcType=VARCHAR},
+      edit_time = #{editTime,jdbcType=TIMESTAMP},
+      creator = #{creator,jdbcType=VARCHAR},
+      creator_id = #{creatorId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      lat = #{lat,jdbcType=VARCHAR},
+      lng = #{lng,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      status = #{status},
+      code = #{code,jdbcType=VARCHAR},
+      task_id = #{taskId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- -->
+  <select id="getRecord" parameterType="com.vk.model.InspectionRecord" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM  vk_inspection_record
+    <where>
+      <if test="states != null">
+        AND status in
+        <foreach collection="states" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="creatorId != null">
+        AND creator_id = #{creatorId}
+      </if>
+    </where>
+  </select>
+
+  <select id="getRecordById" parameterType="com.vk.model.InspectionRecord" resultMap="BaseResultAllMap">
+    SELECT <include refid="Base_Column_List" /> FROM  vk_inspection_record
+    <where>
+      <if test="id != null">
+        AND id = #{id}
+      </if>
+    </where>
+  </select>
+
+  <select id="getRecordCount" parameterType="com.vk.model.InspectionRecord" resultType="int">
+    SELECT count(1)  FROM vk_inspection_record
+    <where>
+      <if test="states != null">
+        AND status in
+        <foreach collection="states" item="item" index="index" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test="creatorId != null">
+        AND creator_id = #{creatorId}
+      </if>
+    </where>
+  </select>
+
+  <select id="getByCodeOrTaskId" resultMap="BaseResultMap">
+    SELECT *
+    from vk_inspection_record
+    <where>
+      <if test="code != null and code !=''">
+        AND code = #{code}
+      </if>
+      <if test="taskId != null and taskId != ''">
+        AND task_id = #{taskId}
+      </if>
+    </where>
+  </select>
+
+</mapper>

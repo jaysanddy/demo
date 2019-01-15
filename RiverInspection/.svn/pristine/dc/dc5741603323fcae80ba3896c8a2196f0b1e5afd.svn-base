@@ -1,0 +1,30 @@
+package com.vk.service.impl;
+
+import com.vk.mapper.InspectionQuestionMapper;
+import com.vk.response.ResultData;
+import com.vk.service.StatsService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ * Created by wj on 18-7-4.
+ */
+@Service
+public class StatsServiceImpl implements StatsService{
+
+    @Resource
+    private InspectionQuestionMapper inspectionQuestionMapper;
+
+    @Override
+    public ResultData getQuestionStats(String beginTime, String endTime) {
+
+        return null;
+    }
+
+    @Override
+    public ResultData getAreaStats(String beginTime, String endTime, Integer riverLevelId) {
+
+        return null;
+    }
+}

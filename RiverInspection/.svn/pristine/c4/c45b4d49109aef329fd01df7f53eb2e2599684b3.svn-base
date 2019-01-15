@@ -1,0 +1,18 @@
+package com.vk.service;
+
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+
+/**
+ * Created by weijin on 2018/6/19.
+ */
+public interface UserRoleService {
+    //查询用户的权限列表
+    ResultData getUserRole(Integer userId,Integer pageNum,Integer pageSize);
+
+    //创建用户的权限
+    Result createUserRole(Integer userId,Integer roleId);
+
+    //删除用户的权限
+    Result deleteUserRole(Integer userId,Integer roleId);
+}

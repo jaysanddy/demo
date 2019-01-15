@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>问题记录</title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link rel="stylesheet" type="text/css" href="../css/miniMobile.css"/>
+		<script type="text/javascript" src="../js/zepto.min.js"></script>
+		<script type="text/javascript" src="../js/miniMobile.js"></script>
+		<script type="text/javascript" src="../js/dropload.js"></script>
+		<link rel="stylesheet" type="text/css" href="../plugins/fonticon/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../js/dropload.css" />
+	</head>
+	<body class="fadeIn animated content pad-top padd-btm">
+	<div class="top">
+		问题列表
+	</div>
+	<div class="load">
+		<img src="../img/timg.gif">
+	</div>
+		<section class="clearfix">
+       <div class="item-box" id="list">
+
+       </div>
+		</section>
+
+	<nav class="bottomNav clearfix">
+		<div class="w3">
+			<a  onclick="window.location.href='../page/adminIndex'">
+				<i class="icon-home"></i>
+				<p>问题复查</p>
+			</a>
+		</div>
+		<div class="w3">
+			<a onclick="window.location.href='../page/troubleshooting'" class="right">
+				<i class="icon-trouble"></i>
+				<p>问题处理</p>
+			</a>
+		</div>
+		<div class="w3 active">
+			<a onclick="window.location.href='../page/problemLog'" class="right">
+				<i class="icon-other"></i>
+				<p>问题记录</p>
+			</a>
+		</div>
+	</nav>
+	</body>
+    <input type="hidden" id="userId" th:value="${userId}">
+
+	<script>
+        $(function(){
+            // 页数
+            var userId=$("#userId").val();
+            var page = 0;
+            var rows = 5;
+            $('.content').dropload({
+                scrollArea : window,
+                loadDownFn : function(me){
+                    page++;
+                    var code = '';
+                    $.ajax({
+                        type: 'post',
+                        url: '/inspectionRecord/getRecord',
+                        data:{
+                            states:"0,1,2,3,5",
+                            creatorId:userId,
+                            page:page,
+                            rows:rows
+                        },
+                        dataType: 'json',
+                        success: function(data){
+                            data=data.data;
+                            var arrLen = data.length;
+                            if(arrLen > 0){
+                                for(var i=0; i<arrLen; i++){
+                                    code+='<a href="../page/recordDetail?recordId='+data[i].id+'">';
+                                    code+='<div class="item-left">';
+                                    code+='<h4 class="nowrap">'+data[i].title+'</h4>';
+                                    code+='<p class="nowrap">'+data[i].towns+'</p>';
+                                    var time=data[i].createTime;
+                                    var d = new Date(time);
+                                    var times=d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+                                    code+='<p>'+times+'</p>';
+                                    code+='</div>';
+                                    code+='<div class="item-right">';
+                                    if(data[i].status=="0"){
+                                        code+='<div class="state1"></div>';
+                                    }else if(data[i].status=="1"){
+                                        code+='<div class="state2"></div>';
+                                    }else if(data[i].status=="2"){
+                                        code+='<div class="state3"></div>';
+                                    }else if(data[i].status=="3"){
+                                        code+='<div class="state33"></div>';
+                                    }else if(data[i].status=="5"){
+                                        code+='<div class="state4"></div>';
+                                    }
+                                    code+='</div>';
+                                    code+='</a>';
+                                }
+                            }else{
+                                me.lock();
+                                me.noData();
+                            }
+                            setTimeout(function(){
+                                $('#list').append(code);
+                                me.resetload();
+                            },1000);
+                        },
+                        error: function(xhr, type){
+                            alert('出错了!');
+                            me.resetload();
+                        }
+                    });
+                }
+            });
+        });
+	</script>
+</html>

@@ -1,0 +1,13 @@
+package com.vk.service;
+
+import com.vk.model.InspectionAnswerQuestions;
+import com.vk.response.Result;
+
+import java.util.List;
+
+/**
+ * Created by weijin on 2018/6/25.
+ */
+public interface InspectionRecordService {
+    Result createRecord (String title,String riverName,Integer riverId,String riverNo,String towns,String lat,String lng,String address,Integer first_assess,String describe,String[] photoFiles,Integer score,Integer rectification,List<InspectionAnswerQuestions> detail);
+}

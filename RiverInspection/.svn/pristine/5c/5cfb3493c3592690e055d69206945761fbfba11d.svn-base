@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vk.mapper.RiverMapper" >
+  <resultMap id="BaseResultMap" type="com.vk.model.River" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="river_name" property="riverName" jdbcType="VARCHAR" />
+    <result column="lengths" property="lengths" jdbcType="DOUBLE" />
+    <result column="begin_area" property="beginArea" jdbcType="VARCHAR" />
+    <result column="end_area" property="endArea" jdbcType="VARCHAR" />
+    <result column="basin_area" property="basinArea" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="areas" property="areas" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="river_no" property="riverNo" jdbcType="VARCHAR" />
+    <collection property="riverLevel" column="riverId=id" javaType="ArrayList"
+                ofType="Map" select="com.vk.mapper.JointRiverLevelMapper.getRiverLevel"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, river_name, lengths, begin_area, end_area, basin_area, remark, areas, area_id, 
+    create_time,river_no
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vk_river
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vk_river
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vk.model.River" >
+    insert into vk_river (id, river_name, lengths, 
+      begin_area, end_area, basin_area, 
+      remark, areas, area_id, 
+      create_time,river_no)
+    values (#{id,jdbcType=INTEGER}, #{riverName,jdbcType=VARCHAR}, #{lengths,jdbcType=DOUBLE}, 
+      #{beginArea,jdbcType=VARCHAR}, #{endArea,jdbcType=VARCHAR}, #{basinArea,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{areas,jdbcType=VARCHAR}, #{areaId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP},#{riverNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vk.model.River" useGeneratedKeys="true" keyProperty="id">
+    insert into vk_river
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="riverName != null" >
+        river_name,
+      </if>
+      <if test="lengths != null" >
+        lengths,
+      </if>
+      <if test="beginArea != null" >
+        begin_area,
+      </if>
+      <if test="endArea != null" >
+        end_area,
+      </if>
+      <if test="basinArea != null" >
+        basin_area,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="areas != null" >
+        areas,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="riverNo != null">
+        river_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="riverName != null" >
+        #{riverName,jdbcType=VARCHAR},
+      </if>
+      <if test="lengths != null" >
+        #{lengths,jdbcType=DOUBLE},
+      </if>
+      <if test="beginArea != null" >
+        #{beginArea,jdbcType=VARCHAR},
+      </if>
+      <if test="endArea != null" >
+        #{endArea,jdbcType=VARCHAR},
+      </if>
+      <if test="basinArea != null" >
+        #{basinArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="areas != null" >
+        #{areas,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="riverNo != null">
+        #{riverNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vk.model.River" >
+    update vk_river
+    <set >
+      <if test="riverName != null" >
+        river_name = #{riverName,jdbcType=VARCHAR},
+      </if>
+      <if test="lengths != null" >
+        lengths = #{lengths,jdbcType=DOUBLE},
+      </if>
+      <if test="beginArea != null" >
+        begin_area = #{beginArea,jdbcType=VARCHAR},
+      </if>
+      <if test="endArea != null" >
+        end_area = #{endArea,jdbcType=VARCHAR},
+      </if>
+      <if test="basinArea != null" >
+        basin_area = #{basinArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="areas != null" >
+        areas = #{areas,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="riverNo != null">
+        river_no = #{riverNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vk.model.River" >
+    update vk_river
+    set river_name = #{riverName,jdbcType=VARCHAR},
+      lengths = #{lengths,jdbcType=DOUBLE},
+      begin_area = #{beginArea,jdbcType=VARCHAR},
+      end_area = #{endArea,jdbcType=VARCHAR},
+      basin_area = #{basinArea,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      areas = #{areas,jdbcType=VARCHAR},
+      area_id = #{areaId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <!-- 分割线 -->
+  <select id="getByteRivers" resultMap="BaseResultMap">
+    SELECT  r.id, river_name, lengths, begin_area, end_area, basin_area, r.remark, areas, area_id,
+    r.create_time,river_no,a.name areaName FROM vk_river  r left join vk_joint_river_level l on r.id = l.river_id left join vk_area a on r.area_id = a.id
+    <where>
+      <if test="id != null">
+        AND r.id = #{id}
+      </if>
+      <if test="riverName != null">
+       AND river_name like '%${riverName}%'
+      </if>
+      <if test="areaId != null">
+        AND area_id = #{areaId}
+      </if>
+      <!--<if test="riverLevelId != null">-->
+        <!--AND l.level_id = #{riverLevelId}-->
+      <!--</if>-->
+    </where>
+    group by r.Id
+  </select>
+</mapper>

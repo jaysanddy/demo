@@ -1,0 +1,175 @@
+package com.vk.model;
+
+import java.util.Date;
+
+public class InspectionRecord {
+    private Integer id;
+
+    private String riverName;
+
+    private Integer riverId;
+
+    private Integer areaId;
+
+    private String towns;
+
+    private String inspectionSite;
+
+    private String signPlace;
+
+    private Date inspectionTime;
+
+    private Integer firstAssess;
+
+    private String describe;
+
+    private Integer score;
+
+    private Integer editUserId;
+
+    private String editUserName;
+
+    private Date editTime;
+
+    private String creator;
+
+    private Integer creatorId;
+
+    private Date createTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRiverName() {
+        return riverName;
+    }
+
+    public void setRiverName(String riverName) {
+        this.riverName = riverName == null ? null : riverName.trim();
+    }
+
+    public Integer getRiverId() {
+        return riverId;
+    }
+
+    public void setRiverId(Integer riverId) {
+        this.riverId = riverId;
+    }
+
+    public Integer getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
+    }
+
+    public String getTowns() {
+        return towns;
+    }
+
+    public void setTowns(String towns) {
+        this.towns = towns == null ? null : towns.trim();
+    }
+
+    public String getInspectionSite() {
+        return inspectionSite;
+    }
+
+    public void setInspectionSite(String inspectionSite) {
+        this.inspectionSite = inspectionSite == null ? null : inspectionSite.trim();
+    }
+
+    public String getSignPlace() {
+        return signPlace;
+    }
+
+    public void setSignPlace(String signPlace) {
+        this.signPlace = signPlace == null ? null : signPlace.trim();
+    }
+
+    public Date getInspectionTime() {
+        return inspectionTime;
+    }
+
+    public void setInspectionTime(Date inspectionTime) {
+        this.inspectionTime = inspectionTime;
+    }
+
+    public Integer getFirstAssess() {
+        return firstAssess;
+    }
+
+    public void setFirstAssess(Integer firstAssess) {
+        this.firstAssess = firstAssess;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe == null ? null : describe.trim();
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public Integer getEditUserId() {
+        return editUserId;
+    }
+
+    public void setEditUserId(Integer editUserId) {
+        this.editUserId = editUserId;
+    }
+
+    public String getEditUserName() {
+        return editUserName;
+    }
+
+    public void setEditUserName(String editUserName) {
+        this.editUserName = editUserName == null ? null : editUserName.trim();
+    }
+
+    public Date getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(Date editTime) {
+        this.editTime = editTime;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator == null ? null : creator.trim();
+    }
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+}

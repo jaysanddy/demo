@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>首页</title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link rel="stylesheet" type="text/css" href="../css/miniMobile.css"/>
+		<script type="text/javascript" src="../js/zepto.min.js"></script>
+		<script type="text/javascript" src="../js/miniMobile.js"></script>
+		<link rel="stylesheet" type="text/css" href="../plugins/fonticon/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+	<body class="fadeIn animated">
+    <div class="load">
+      <img src="../img/timg.gif">
+    </div>
+    <header>
+      <div class="bcl">
+        <div class="scl">
+            <div class="head-img">
+              <img src="../img/user2.jpg">
+            </div>
+        </div>
+      </div>
+    </header>
+    <ul class="list-3">
+      <li>
+        <h3 id="ing">10</h3>
+        <p>进行中</p>
+      </li>
+      <li id="throuth">
+        <h3>10</h3>
+        <p>待复查</p>
+      </li>
+      <li>
+        <h3 id="finish">10</h3>
+        <p>已完成</p>
+      </li>
+    </ul>
+		<section class="clearfix padd-btm">
+			 <div class="title-p">
+          <p><span></span><em></em><b>问题复查</b><em></em><span></span></p>
+       </div>
+
+       <div class="item-box" id="list">
+
+       </div>
+		</section>
+
+		<nav class="bottomNav clearfix">
+			 <div class="w5 active">
+        <a href="index.html">
+          <i class="icon-home"></i>
+          <p>问题复查</p>
+        </a>
+      </div>
+      <div class="w5">
+        <a onclick="window.location.href='../page/recordList'" class="right">
+          <i class="icon-other"></i>
+          <p>问题记录</p>
+        </a>
+      </div>
+		</nav>
+    <div class="add-btn">
+      <a onclick="window.location.href='../page/createRecord'">
+        <img src="../img/add.png">
+      </a>
+    </div>
+	</body>
+    <input type="hidden" id="userId" th:value="${userId}">
+  <script type="text/javascript">
+    window.onload=function(){
+      $(".load").hide();
+    }
+    getHead();
+    function getHead(){
+        var userId=$("#userId").val();
+        $.post("/inspectionRecord/getRecordCount",
+            {
+                userId:userId
+            },
+            function(data){
+                var data=data.data;
+                $("#finish").text(data.finish);
+                $("#ing").text(data.ing);
+                $("#through").text(data.through);
+            });
+    }
+    getList();
+    var page=1;
+    function getList(){
+        var userId=$("#userId").val();
+        $.post("/inspectionRecord/getRecord",
+            {
+                states:"0,1,2,3,5",
+                userId:userId,
+                page:page,
+                rows:5
+            },
+            function(data){
+                var code='';
+                data=data.data;
+                for(var i=0;i<data.length;i++){
+                    code+='<a href="upload-detail.html">';
+                    code+='<div class="item-left">';
+                    code+='<h4 class="nowrap">'+data[i].title+'</h4>';
+                    code+='<p class="nowrap">'+data[i].towns+'</p>';
+                    code+='<p>'+data[i].inspectionTime+'</p>';
+                    code+='</div>';
+                    code+='<div class="item-right">';
+                    if(data[i].status=="0"){
+                        code+='<div class="state1"></div>';
+                    }else if(data[i].status=="1"){
+                        code+='<div class="state2"></div>';
+                    }else if(data[i].status=="2"){
+                        code+='<div class="state3"></div>';
+                    }else if(data[i].status=="3"){
+                        code+='<div class="state4"></div>';
+                    }else if(data[i].status=="5"){
+                        code+='<div class="state5"></div>';
+                    }
+                    code+='</div>';
+                    code+='</a>';
+                }
+                $("#list").html(code);
+            });
+    }
+
+  </script>
+</html>

@@ -1,0 +1,25 @@
+package com.vk.mapper;
+
+import com.vk.model.InspectionRecord;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface InspectionRecordMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(InspectionRecord record);
+
+    int insertSelective(InspectionRecord record);
+
+    InspectionRecord selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(InspectionRecord record);
+
+    int updateByPrimaryKey(InspectionRecord record);
+
+    List<InspectionRecord> getRecord(InspectionRecord record);
+
+    InspectionRecord getRecordById(InspectionRecord record);
+}

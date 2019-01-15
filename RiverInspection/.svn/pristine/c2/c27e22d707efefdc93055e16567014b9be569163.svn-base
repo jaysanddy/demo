@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>问题记录</title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link rel="stylesheet" type="text/css" href="../css/miniMobile.css"/>
+		<script type="text/javascript" src="../js/zepto.min.js"></script>
+		<script type="text/javascript" src="../js/miniMobile.js"></script>
+		<link rel="stylesheet" type="text/css" href="../plugins/fonticon/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	</head>
+	<body class="fadeIn animated">
+		<section class="clearfix padd-btm">
+       <div class="item-box">
+          <a href="#">
+            <div class="item-left">
+              <h4 class="nowrap">河道处理标题河道处理标题河道处理标题河道处理标题河道处理标题河道处理标题河道处理标题河道处理标题河道处理标题河道处理标题河道处理标题</h4>
+              <p class="nowrap">苏州市吴中区金猫路1号E楼苏州市吴中区金猫路1号E楼苏州市吴中区金猫路1号E楼苏州市吴中区金猫路1号E楼苏州市吴中区金猫路1号E楼苏州市吴中区金猫路1号E楼</p>
+              <p>2018-06-19</p>
+            </div>
+            <div class="item-right">
+                <div class="state1"></div>
+            </div>
+          </a>
+          <a href="#">
+            <div class="item-left">
+              <h4 class="nowrap">河道处理标题</h4>
+              <p class="nowrap">苏州市吴中区金猫路1号E楼</p>
+              <p>2018-06-19</p>
+            </div>
+            <div class="item-right">
+              <div class="state2"></div>
+            </div>
+          </a>
+          <a href="#">
+            <div class="item-left">
+              <h4 class="nowrap">河道处理标题</h4>
+              <p class="nowrap">苏州市吴中区金猫路1号E楼</p>
+              <p>2018-06-19</p>
+            </div>
+            <div class="item-right">
+              <div class="state3"></div>
+            </div>
+          </a>
+          <a href="#">
+            <div class="item-left">
+              <h4 class="nowrap">河道处理标题</h4>
+              <p class="nowrap">苏州市吴中区金猫路1号E楼</p>
+              <p>2018-06-19</p>
+            </div>
+            <div class="item-right">
+              <div class="state33"></div>
+            </div>
+          </a>
+          <a href="#">
+            <div class="item-left">
+              <h4 class="nowrap">河道处理标题</h4>
+              <p class="nowrap">苏州市吴中区金猫路1号E楼</p>
+              <p>2018-06-19</p>
+            </div>
+            <div class="item-right">
+              <div class="state4"></div>
+            </div>
+          </a>
+       </div>
+		</section>
+
+		<nav class="bottomNav clearfix">
+			 <div class="w5">
+        <a onclick="window.location.href='../page/inspectionIndex'">
+          <i class="icon-home"></i>
+          <p>问题复查</p>
+        </a>
+      </div>
+      <div class="w5 active">
+        <a href="index.html" class="right">
+          <i class="icon-other"></i>
+          <p>问题记录</p>
+        </a>
+      </div>
+		</nav>
+    <div class="add-btn">
+      <a href="upload.html">
+        <img src="img/add.png">
+      </a>
+    </div>
+	</body>
+    <input id="areaId" th:value="${areaId}">
+</html>

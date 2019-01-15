@@ -1,0 +1,430 @@
+package com.vk.service.impl;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.vk.mapper.*;
+import com.vk.model.*;
+import com.vk.request.DemoResult;
+import com.vk.request.DetailResult;
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+import com.vk.security.UserDetail;
+import com.vk.service.AreaService;
+import com.vk.service.InspectionRecordService;
+import com.vk.util.*;
+import org.apache.commons.collections.map.HashedMap;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static com.vk.util.DateUtil.fmPattern;
+
+/**
+ * Created by weijin on 2018/6/25.
+ */
+@Service
+public class InspectionRecordServiceImpl implements InspectionRecordService {
+    @Resource
+    private InspectionRecordMapper inspectionRecordMapper;
+    @Resource
+    private InspectionQuestionMapper inspectionQuestionMapper;
+    @Resource
+    private RiverQuestionMapper riverQuestionMapper;
+    @Resource
+    private InspectionFileMapper inspectionFileMapper;
+
+    @Value("${project.uploadFilePath}")
+    private String uploadFilePath;
+
+    @Value("${project.url}")
+    private String projectUrl;
+
+    @Value("${project.wjUrl}")
+    private String wjUrl;
+    @Resource
+    private AreaMapper areaMapper;
+    @Resource
+    private InspectionStatusMapper inspectionStatusMapper;
+
+    @Transactional
+    @Override
+    public Result createRecord(Integer areaId,String title, String riverName, Integer riverId, String riverNo, String towns, String lat, String lng, String address, Integer firstAssess, String context, List photoFiles, Integer score, Integer rectification,List<DemoResult> detail) throws Exception {
+        Result result = new Result(ResultData.FAILED,null,"插入失败");
+        Date nowTime = new Date();
+        String code = "01"+ fmPattern(nowTime,"yyyyMMdd")+ DateUtil.getRandom(1000,9999);
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try{
+            InspectionRecord inspectionRecord = new InspectionRecord();
+
+            inspectionRecord.setTitle(title);
+            inspectionRecord.setRiverName(riverName);
+            inspectionRecord.setRiverId(riverId);
+            inspectionRecord.setRiverNo(riverNo);
+            inspectionRecord.setTowns(towns);
+            inspectionRecord.setLat(lat);
+            inspectionRecord.setLng(lng);
+            inspectionRecord.setAddress(address);
+            inspectionRecord.setFirstAssess(firstAssess);
+            inspectionRecord.setContext(context);
+            inspectionRecord.setScore(score);
+            inspectionRecord.setRectification(rectification);
+            inspectionRecord.setAreaId(areaId);
+            inspectionRecord.setCreatorId(userDetail.getId());
+            inspectionRecord.setCreator(userDetail.getRealName());
+            inspectionRecord.setCreateTime(new Date());
+            inspectionRecord.setCode(code);
+            inspectionRecord.setStatus("0");
+
+            inspectionRecordMapper.insertSelective(inspectionRecord);
+            if(photoFiles.size()>0){
+                for(int i=0;i<photoFiles.size();i++){
+                    String filename =FileUtil.base64ToFile(uploadFilePath,photoFiles.get(i).toString());
+                    InspectionFile file = new InspectionFile();
+                    file.setType(0);
+                    file.setCreateTime(new Date());
+                    file.setRecordId(inspectionRecord.getId());
+                    file.setFileName(filename);
+                    inspectionFileMapper.insertSelective(file);
+                }
+            }
+            if(detail != null){
+                for(DemoResult demoResult:detail){
+
+                    if(demoResult.getDetail()!= null){
+                        for(DetailResult result1:demoResult.getDetail()){
+                            InspectionQuestion question = new InspectionQuestion();
+                            if(TextUtil.integerNotEmpty(inspectionRecord.getId())){
+                                question.setRecordId(inspectionRecord.getId());
+                            }
+                            question.setStatus(0);
+                            question.setFirstQuestionId(demoResult.getId());
+                            if(TextUtil.integerNotEmpty(result1.getIds())){
+                                question.setTwoQuestionId(Integer.valueOf(result1.getIds()));
+                            }
+                            if(TextUtil.isNotEmpty(result1.getScore())){
+                                question.setScore(Integer.valueOf(result1.getScore()));
+                            }
+                            inspectionQuestionMapper.insertSelective(question);
+                        }
+                    }
+
+                    if(demoResult.getDescription() != null){
+                        InspectionQuestion question = new InspectionQuestion();
+                        question.setRecordId(inspectionRecord.getId());
+                        question.setStatus(1);
+                        question.setFirstQuestionId(demoResult.getId());
+                        question.setText(demoResult.getDescription());
+                        inspectionQuestionMapper.insertSelective(question);
+                    }
+                }
+            }
+
+            result.setCode(Result.SUCCESS);
+            result.setMsg("添加成功");
+        }catch (Exception e){
+            throw new RuntimeException("",e.getCause());
+        }
+        return result;
+    }
+
+    @Override
+    public ResultData getRecord(String[] states,String riverName,String title,String startDate,String endDate,Integer firstAssess,Integer pageNum,Integer pageSize,Integer creatorId) {
+        ResultData resultData = new ResultData(ResultData.FAILED,null,"查询失败");
+        try{
+            InspectionRecord record = new InspectionRecord();
+            record.setCreatorId(creatorId);
+            if(TextUtil.isNotEmpty(riverName)){
+                record.setRiverName(riverName);
+            }
+            if(TextUtil.isNotEmpty(title)){
+                record.setTitle(title);
+            }
+            if(TextUtil.isNotEmpty(startDate)){
+                record.setStartDate(DateUtil.StrToDate(startDate));
+            }
+            if(TextUtil.isNotEmpty(endDate)){
+                record.setEndDate(DateUtil.StrToDate(endDate));
+            }
+            if(TextUtil.integerNotEmpty(firstAssess)){
+                record.setFirstAssess(firstAssess);
+            }
+            if(states.length>0) {
+                List<Integer> arry = new ArrayList<>();
+                for (String state : states) {
+                    arry.add(Integer.valueOf(state));
+                }
+                record.setStates(arry);
+            }
+
+            Page page = PageHelper.startPage(pageNum,pageSize,true);
+            List<InspectionRecord> list = inspectionRecordMapper.getRecord(record);
+            Long total = page.getTotal();
+            Integer pages = page.getPages();
+            ResultData dataResult = new ResultData(ResultData.SUCCESS,pageNum,total,pages,list,"查询成功");
+            return dataResult;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return resultData;
+    }
+
+    @Override
+    public ResultData getRecordById(Integer recordId) {
+        ResultData resultData = new ResultData(ResultData.FAILED,null,"查询失败");
+        try{
+            InspectionRecord record = new InspectionRecord();
+            record.setId(recordId);
+
+            InspectionRecord list = inspectionRecordMapper.getRecordById(record);
+
+            InspectionQuestion inspectionQuestion = new InspectionQuestion();
+            inspectionQuestion.setStatus(0);
+            inspectionQuestion.setRecordId(recordId);
+            List<InspectionQuestion> inspectionQuestions= inspectionQuestionMapper.getQuestions(inspectionQuestion);//获得问题集合
+
+            InspectionQuestion inspectionQuestion1 = new InspectionQuestion();
+            inspectionQuestion1.setStatus(1);
+            inspectionQuestion1.setRecordId(recordId);
+            List<InspectionQuestion> text= inspectionQuestionMapper.getQuestions(inspectionQuestion1);//获得说明
+
+//            List<Map<String,Object>> questionList = new ArrayList<Map<String,Object>>();
+
+            List<RiverQuestion> riverQuestions = riverQuestionMapper.getRiverQuestion();//获得父类问题的种类
+            for(RiverQuestion riverQuestion:riverQuestions){
+                List<InspectionQuestion> questionList= new ArrayList<>();
+                for(InspectionQuestion question:inspectionQuestions){
+                    if(riverQuestion.getId().equals(question.getFirstQuestionId())){
+                        questionList.add(question);
+                    }
+                }
+                riverQuestion.setSecondQuestions(questionList);
+
+                if(text != null){
+                    for(InspectionQuestion questionText:text){
+                        if(riverQuestion.getId().equals(questionText.getFirstQuestionId())){
+                            riverQuestion.setText(questionText.getText());
+                        }
+                    }
+                }
+            }
+            list.setRiverQuestions(riverQuestions);
+
+
+            ResultData dataResult = new ResultData(ResultData.SUCCESS,null,null,null,list,"查询成功");
+            return dataResult;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return resultData;
+    }
+
+    @Override
+    public ResultData getRecordCount(Integer creatorId) {
+        ResultData resultData = new ResultData(ResultData.FAILED,null,"查询失败");
+        try{
+            List list =new ArrayList<>();
+            List list1 =new ArrayList<>();
+            List list2 =new ArrayList<>();
+
+            list.add(0);
+            list.add(1);
+            list1.add(2);
+            list1.add(3);
+            list2.add(5);
+
+            InspectionRecord record = new InspectionRecord();
+            if(creatorId != null){
+                record.setCreatorId(creatorId);
+            }
+            record.setStates(list);
+            Integer ing =inspectionRecordMapper.getRecordCount(record); //进行中
+
+            InspectionRecord record1 = new InspectionRecord();
+            if(creatorId != null){
+                record1.setCreatorId(creatorId);
+            }
+            record1.setStates(list1);
+            Integer through =inspectionRecordMapper.getRecordCount(record1); //审核中
+
+            InspectionRecord record2 = new InspectionRecord();
+            if(creatorId != null){
+                record2.setCreatorId(creatorId);
+            }
+            record2.setStates(list2);
+            Integer finish =inspectionRecordMapper.getRecordCount(record2); //完成
+
+            Map<String,Object> map = new HashedMap();
+            map.put("ing",ing);
+            map.put("through",through);
+            map.put("finish",finish);
+
+            ResultData dataResult = new ResultData(ResultData.SUCCESS,null,null,null,map,"查询成功");
+            return dataResult;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return resultData;
+    }
+
+    @Transactional
+    @Override
+    public Result updateRecord(Integer recordId,String address,String lat,String lng,String status,String title, Integer firstAssess, String context, List photoFiles, Integer score, Integer rectification,List<DemoResult> detail,String code,Integer areaId) throws Exception {
+        Result result = new Result(ResultData.FAILED,null,"插入失败");
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try {
+            InspectionRecord inspectionRecord = inspectionRecordMapper.selectByPrimaryKey(recordId);
+
+            inspectionRecord.setId(recordId);
+            inspectionRecord.setTitle(title);
+            inspectionRecord.setFirstAssess(firstAssess);
+            inspectionRecord.setContext(context);
+            inspectionRecord.setScore(score);
+            inspectionRecord.setRectification(rectification);
+            inspectionRecord.setEditUserId(userDetail.getId());
+            inspectionRecord.setEditUserName(userDetail.getRealName());
+            inspectionRecord.setEditTime(new Date());
+            inspectionRecord.setStatus(status);
+            inspectionRecordMapper.updateByPrimaryKeySelective(inspectionRecord);
+
+            InspectionFile inspectionFile = new InspectionFile();
+            inspectionFile.setRecordId(recordId);
+            inspectionFileMapper.delRecordFile(inspectionFile);
+
+            String imagesUrl = "";
+            if(photoFiles.size()>0){
+                for(int i=0;i<photoFiles.size();i++){
+                    //String filename =FileUtil.base64ToFile(projectUrl,photoFiles.get(i).toString());
+                    String timeStamp=(new Date()).getTime()+"";
+                    Integer ranNum = DataUtil.getRandm(1000,9999);
+                    imagesUrl += "<File name=\""+timeStamp+ranNum+"\"  url=\""+projectUrl+photoFiles.get(i)+"\" />";
+                    InspectionFile file = new InspectionFile();
+                    file.setType(0);
+                    file.setCreateTime(new Date());
+                    file.setRecordId(inspectionRecord.getId());
+                    file.setFileName(String.valueOf(photoFiles.get(i)));
+                    inspectionFileMapper.insertSelective(file);
+                }
+            }
+
+            InspectionQuestion inspectionQuestion = new InspectionQuestion();
+            inspectionQuestion.setRecordId(recordId);
+            inspectionQuestionMapper.delQuestions(inspectionQuestion);
+            if(detail != null){
+                for(DemoResult demoResult:detail){
+
+                    if(demoResult.getDetail()!= null){
+                        for(DetailResult result1:demoResult.getDetail()){
+                            InspectionQuestion question = new InspectionQuestion();
+                            if(TextUtil.integerNotEmpty(inspectionRecord.getId())){
+                                question.setRecordId(inspectionRecord.getId());
+                            }
+                            question.setStatus(0);
+                            question.setFirstQuestionId(demoResult.getId());
+                            if(TextUtil.integerNotEmpty(result1.getIds())){
+                                question.setTwoQuestionId(Integer.valueOf(result1.getIds()));
+                            }
+                            if(TextUtil.isNotEmpty(result1.getScore())){
+                                question.setScore(Integer.valueOf(result1.getScore()));
+                            }
+                            inspectionQuestionMapper.insertSelective(question);
+                        }
+                    }
+
+                    if(demoResult.getDescription() != null){
+                        InspectionQuestion question = new InspectionQuestion();
+                        question.setRecordId(inspectionRecord.getId());
+                        question.setStatus(1);
+                        question.setFirstQuestionId(demoResult.getId());
+                        question.setText(demoResult.getDescription());
+                        inspectionQuestionMapper.insertSelective(question);
+                    }
+                }
+            }
+
+            //提交交给大联动
+            if(status.equals("1")){
+                String urlRequest = "dld/sendInputInfo";
+                Area area = areaMapper.selectByPrimaryKey(inspectionRecord.getAreaId());
+                Result resultBigLink =BigLinkageUtil.sendBigLink(wjUrl+urlRequest,address,context,userDetail.getRealName(),userDetail.getPhone(),lat,lng,fmPattern(new Date(),"yyyy-MM-dd HH:mm:ss"),code,imagesUrl,null,area.getRemark());
+                if(resultBigLink.getCode() == Result.SUCCESS){
+                    InspectionStatus inspectionStatus = new InspectionStatus();
+                    inspectionStatus.setCreateTime(new Date());
+                    inspectionStatus.setContent("已推送至大联动");
+                    inspectionStatus.setRecordId(recordId);
+                    inspectionStatusMapper.insert(inspectionStatus);
+                    if(resultBigLink.getData() != null){
+                        Map<String,Object> map = (Map)resultBigLink.getData();
+                        InspectionRecord returnRecord = new InspectionRecord();
+                        returnRecord.setId(recordId);
+                        returnRecord.setTaskId(String.valueOf(map.get("taskId")));
+                        inspectionRecordMapper.updateByPrimaryKeySelective(returnRecord);
+                    }
+                }else{
+                    result.setMsg("提交至大联动失败");
+                    return result;
+                }
+            }
+
+            result.setCode(Result.SUCCESS);
+            result.setMsg("查询成功");
+        }catch (Exception e){
+            throw new RuntimeException("",e.getCause());
+        }
+        return result;
+    }
+
+
+    @Override
+    public ResultData getRecordLocations(Integer areaId, String beginTime, String endTime) {
+        if(TextUtil.isEmpty(beginTime)&&TextUtil.isEmpty(endTime)){
+            beginTime = DateUtil.getFirstDay();
+            endTime = DateUtil.getLastDay();
+        }
+        List<Map<String,Object>> locations = inspectionRecordMapper.getRecordLocations(areaId,beginTime,endTime);
+        ResultData resultData = new ResultData(Result.SUCCESS,locations,"查询成功");
+        return resultData;
+    }
+
+    @Override
+    public Result riverRecordManagerExport(String[] states,String riverName,String title,String startDate,String endDate,Integer firstAssess) {
+        Result result = new Result(Result.FAILED,null,"获取数据失败");
+        try{
+            InspectionRecord record = new InspectionRecord();
+            if(TextUtil.isNotEmpty(riverName)){
+                record.setRiverName(riverName);
+            }
+            if(TextUtil.isNotEmpty(title)){
+                record.setTitle(title);
+            }
+            if(TextUtil.isNotEmpty(startDate)){
+                record.setStartDate(DateUtil.StrToDate(startDate));
+            }
+            if(TextUtil.isNotEmpty(endDate)){
+                record.setEndDate(DateUtil.StrToDate(endDate));
+            }
+            if(TextUtil.integerNotEmpty(firstAssess)){
+                record.setFirstAssess(firstAssess);
+            }
+            if(states.length>0) {
+                List<Integer> arry = new ArrayList<>();
+                for (String state : states) {
+                    arry.add(Integer.valueOf(state));
+                }
+                record.setStates(arry);
+            }
+
+            List<InspectionRecord> list = inspectionRecordMapper.getRecord(record);
+            return ExportXmlUtil.InspectionRecordExport(list,uploadFilePath,"uploadFile/inspectionRecord/excel/");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+}

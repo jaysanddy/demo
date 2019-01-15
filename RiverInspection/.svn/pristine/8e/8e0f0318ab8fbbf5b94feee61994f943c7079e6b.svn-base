@@ -1,0 +1,11 @@
+package com.vk.service;
+
+import com.vk.response.Result;
+
+/**
+ * Created by wj on 18-5-5.
+ */
+public interface UserService {
+
+    public Result updatePassword(Integer userId, String oldPassword, String newPassword);
+}

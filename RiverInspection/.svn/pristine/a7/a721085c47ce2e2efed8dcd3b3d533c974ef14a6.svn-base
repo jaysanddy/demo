@@ -1,0 +1,49 @@
+package com.vk.service.impl;
+
+import com.vk.mapper.InspectionQuestionMapper;
+import com.vk.mapper.InspectionRecordMapper;
+import com.vk.model.InspectionRecord;
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+import com.vk.service.StatsService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by wj on 18-7-4.
+ */
+@Service
+public class StatsServiceImpl implements StatsService{
+
+    @Resource
+    private InspectionQuestionMapper inspectionQuestionMapper;
+
+    @Resource
+    private InspectionRecordMapper inspectionRecordMapper;
+    @Override
+    public ResultData getQuestionStats(String beginTime, String endTime) {
+        ResultData resultData = new ResultData(Result.FAILED,null,"error");
+        List<Map<String,Object>> maps = inspectionQuestionMapper.getQuestionStats(beginTime,endTime);
+        if(maps!=null&&maps.size()>0){
+            resultData.setData(maps);
+            resultData.setCode(Result.SUCCESS);
+            resultData.setMsg("查询成功！");
+        }
+        return resultData;
+    }
+
+    @Override
+    public ResultData getAreaStats(String beginTime, String endTime, Integer riverLevelId) {
+        ResultData resultData = new ResultData(Result.FAILED,null,"error");
+        List<Map<String,Object>> maps = inspectionRecordMapper.getAreaStats(beginTime,endTime,riverLevelId);
+        if(maps!=null&&maps.size()>0){
+            resultData.setData(maps);
+            resultData.setCode(Result.SUCCESS);
+            resultData.setMsg("查询成功！");
+        }
+        return resultData;
+    }
+}

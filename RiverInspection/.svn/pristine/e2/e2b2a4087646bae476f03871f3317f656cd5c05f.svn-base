@@ -1,0 +1,98 @@
+package com.vk.util;
+
+import com.vk.model.InspectionRecord;
+import org.apache.poi.hssf.usermodel.*;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by weijin on 2018/7/7.
+ */
+public class PoiExportUtil {
+
+    public static String poiExport(String sheetTitle, List rowName,List<?> T){
+        Method metd = null;
+        String fdname = null;
+
+        // 创建excel
+        HSSFWorkbook wb = new HSSFWorkbook();
+
+        // 创建sheet
+
+        HSSFSheet sheet = wb.createSheet(sheetTitle);
+
+        // 创建一行
+        HSSFRow rowTitle = sheet.createRow(0);
+
+        // 创建标题栏样式
+        HSSFCellStyle styleTitle = wb.createCellStyle();
+        styleTitle.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 居中
+        HSSFFont fontTitle = wb.createFont();
+        // 宋体加粗
+        fontTitle.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        fontTitle.setFontName("宋体");
+        fontTitle.setFontHeight((short) 200);
+        styleTitle.setFont(fontTitle);
+
+        // 在行上创建1列
+        HSSFCell cellTitle = rowTitle.createCell(0);
+
+        for(int i=0;i<rowName.size();i++){
+            // 列标题及样式
+            cellTitle.setCellValue(rowName.get(i).toString());
+            cellTitle.setCellStyle(styleTitle);
+        }
+        HSSFCellStyle styleCenter = wb.createCellStyle();
+        styleCenter.setAlignment(HSSFCellStyle.ALIGN_CENTER);// 居中
+
+        try{
+            for(Object object:T){
+                Class clazz =object.getClass();
+                Field[] fds = clazz.getDeclaredFields();
+                for(Field field:fds){
+                     fdname = field.getName();// 得到字段名，
+                     metd = clazz.getMethod("get" + change(fdname), null);
+                     Object name = metd.invoke(object, null);
+                     System.out.println(fdname);
+                     System.out.println(name);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static String change(String src) {
+        if (src != null) {
+            StringBuffer sb = new StringBuffer(src);
+            sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+            return sb.toString();
+        } else {
+            return null;
+        }
+    }
+
+    public static void main(String[] args){
+        List rowName = new ArrayList();
+        rowName.add("第一");
+        rowName.add("第二");
+        rowName.add("第三");
+
+        List<InspectionRecord> list = new ArrayList<>();
+        for(int i=0;i<10;i++){
+            InspectionRecord inspectionRecord = new InspectionRecord();
+            inspectionRecord.setStatus("不错"+i);
+            inspectionRecord.setCode("很好"+i);
+            inspectionRecord.setId(i);
+            inspectionRecord.setCreator("wo"+i);
+            list.add(inspectionRecord);
+        }
+        poiExport("很好",rowName,list);
+    }
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vk.mapper.JointRiverLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.vk.model.JointRiverLevelKey" >
+    <id column="river_id" property="riverId" jdbcType="INTEGER" />
+    <id column="level_id" property="levelId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.vk.model.JointRiverLevelKey" >
+    delete from vk_joint_river_level
+    where river_id = #{riverId,jdbcType=INTEGER}
+      and level_id = #{levelId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vk.model.JointRiverLevelKey" >
+    insert into vk_joint_river_level (river_id, level_id)
+    values (#{riverId,jdbcType=INTEGER}, #{levelId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vk.model.JointRiverLevelKey" >
+    insert into vk_joint_river_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="riverId != null" >
+        river_id,
+      </if>
+      <if test="levelId != null" >
+        level_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="riverId != null" >
+        #{riverId,jdbcType=INTEGER},
+      </if>
+      <if test="levelId != null" >
+        #{levelId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- -->
+  <select id="getRiverLevel" parameterType="java.util.Map" resultType="java.util.Map">
+    SELECT r.river_id riverId,l.id,l.name,l.level,l.parent FROM vk_joint_river_level r LEFT JOIN vk_river_level l on r.level_id = l.id
+    <where>
+      <if test="riverId != null">
+        AND r.river_id = #{riverId}
+      </if>
+    </where>
+    ORDER by l.level
+  </select>
+
+  <delete id="deleteRiverLevel" parameterType="int">
+    DELETE FROM vk_joint_river_level
+    where river_id = #{riverId}
+  </delete>
+</mapper>

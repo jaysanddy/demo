@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>用户添加</title>
+    <meta name="keywords" content="河流添加">
+    <meta name="description" content="河流添加">
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="../css/animate.min.css" rel="stylesheet">
+    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+<style type="text/css">
+		.w50{width: 50%;}
+		.mr10{margin-right: 10px;}
+	</style>
+</head>
+
+<body class="gray-bg">
+<input type="hidden" id="riverId" th:value="${river[0].id}">
+<input type="hidden" id="areaId" th:value="${river[0].areaId}">
+
+<div th:if=" ${not #lists.isEmpty(river[0].riverLevel)} ">
+    <div th:if=" ${not #lists.isEmpty(river[0].riverLevel[0])} "  class="firstLevel">
+        <input type="hidden" id="firstLevel" th:value="${river[0].riverLevel[0].id}">
+    </div>
+    <div th:if=" ${not #lists.isEmpty(river[0].riverLevel[1])} " class="secondLevel">
+        <input type="hidden" id="secondLevel" th:value="${river[0].riverLevel[1].id}">
+    </div>
+    dsa
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-6" style="width: 100%">
+            <div class="ibox float-e-margins" style="width: 100%">
+                <div class="ibox-title">
+                    <h5>河流编辑</h5>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">河流名字：</label>
+                            <div class="col-sm-8">
+                                <input id="riverName" name="riverName" class="form-control " type="text" th:value="${river[0].riverName}">
+                                <!--<span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 这里写点提示的内容</span>-->
+                            </div>
+                        </div>
+						<div class="form-group">
+							<label class="col-sm-3 control-label">河流级别：</label>
+							<div class="col-sm-8" style="display: flex;">
+								<select class="form-control level1">
+									<option value="">请选择</option>
+									<option value ="1">市级以上</option>
+									<option value ="2">镇级河道</option>
+									<option value ="3">村级河道</option>
+								</select>
+								<select class="form-control level2 w50">
+									<option value="">请选择</option>
+									<option value ="4">流域性河道</option>
+									<option value ="5">区域骨干河道</option>
+									<option value ="6">重要县级河道</option>
+									<option value ="7">其他县级河道</option>
+								</select>
+							</div>
+						</div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">河流编号：</label>
+                            <div class="col-sm-8">
+                                <input id="riverNo" name="riverNo" class="form-control " type="text" th:value="${river[0].riverNo}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">河流长度：</label>
+                            <div class="col-sm-8">
+                                <input id="lengths" name="lengths" class="form-control " type="text" th:value="${river[0].lengths}" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">河流起点：</label>
+                            <div class="col-sm-8">
+                                <input id="beginArea" name="beginArea" class="form-control " type="text" th:value="${river[0].beginArea}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">河流终点：</label>
+                            <div class="col-sm-8">
+                                <input id="endArea" name="endArea" class="form-control " type="text" th:value="${river[0].endArea}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">流域面积：</label>
+                            <div class="col-sm-8">
+                                <input id="basinArea" name="basinArea" class="form-control " type="text" th:value="${river[0].basinArea}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">行政区域：</label>
+                            <div class="col-sm-8">
+                                <input id="areas" name="areas" class="form-control " type="text" th:value="${river[0].areas}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">地区：</label>
+                            <div class="col-sm-8">
+                                <!--<input id="username" name="username" class="form-control valid" type="text" aria-required="true" aria-invalid="false" >-->
+                                <select id="area"  class="form-control" name="area">
+                                    <option>请选择</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button class="btn btn-public" onclick="window.history.back();">返回</button>
+                                <button class="btn btn-primary" onclick="saveRiver()" >提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/plugins/layer/layer.min.js" type="text/javascript"></script>
+<script src="../js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../js/content.min.js?v=1.0.0"></script>
+<script src="../js/plugins/validate/jquery.validate.min.js"></script>
+<script src="../js/plugins/validate/messages_zh.min.js"></script>
+<script src="../js/demo/form-validate-demo.min.js"></script>
+<script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+<script type="text/javascript">
+	$(function(){
+		getArea();
+		level();
+	
+	})
+	
+	
+	
+	
+	function level(){
+		
+		if( $('.firstLevel').children().length>0 ){
+			var firstLevel = $("#firstLevel").val();
+			$(".level1").val(firstLevel);
+			if(firstLevel == 1){
+				$(".level1").addClass("w50 mr10");
+				$(".level2").show();
+			}
+		} else {
+			$(".level1").val('').removeClass("w50 mr10");;
+			$(".level2").hide();
+			$(".level2").val('');
+		}
+		if( $('.secondLevel').children().length>0 ){
+			var secondLevel = $("#secondLevel").val();
+			$(".level2").val(secondLevel);
+		} else{
+			$(".level2").val('');
+		}
+		
+			$(".level1").change(function(){
+				if ($(this).val() == 1) {
+					$(this).addClass("w50 mr10");
+					$(".level2").show();
+				} else{
+					$(".level2").hide();
+					$(".level2").val('');
+					$(this).removeClass("w50 mr10");
+			}
+		})
+	}
+    
+    function getArea() {
+        var areaId = $("#areaId").val();
+        $.ajax({
+            type: "post",
+            async: false,
+            url: '../area/getArea',
+            dataType: "json",
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status + "1");
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+            },
+            success: function (data) {
+                var code = " <option id=''>请选择</option>";
+                for(var i=0;i<data.length;i++){
+                    if(areaId == ''){
+                        code += " <option value='"+data[i].id+"'>"+data[i].name+"</option>";
+                    }else{
+                        console.log(areaId);
+                        if(areaId == data[i].id){
+                            code += " <option selected = 'selected' value='"+data[i].id+"'>"+data[i].name+"</option>";
+                        }
+                    }
+                }
+                $("#area").html(code);
+            }
+        });
+    }
+
+
+    function saveRiver() {
+        event.preventDefault();
+        var riverId = $("#riverId").val().trim();
+        var riverName = $("#riverName").val().trim();
+        var riverNo = $("#riverNo").val().trim();
+        var lengths = $("#lengths").val().trim();
+        var beginArea = $("#beginArea").val().trim();
+        var endArea = $("#endArea").val().trim();
+        var basinArea = $("#basinArea").val().trim();
+        var areas = $("#areas").val().trim();
+        var areaId = $("#area").val().trim();
+        var success = true;
+		var riverData =[];
+		if($(".level1").val() != 0){
+			riverData.push($(".level1").val());
+		}
+		if($(".level2").val() != 0){
+			riverData.push($(".level2").val());
+		}
+        if(riverName == ''){
+            swal({title:"出错了！",text:"河流名字不能为空",type:"error"});
+            success = false;
+            return;
+        }
+
+        if(riverNo == ''){
+            swal({title:"出错了！",text:"河流编号不能为空",type:"error"});
+            success = false;
+            return;
+        }
+
+        if(areaId == ''){
+            swal({title:"出错了！",text:"所属地区不能为空",type:"error"});
+            success = false;
+            return;
+        }
+
+        if(riverData == ''){
+            swal({title:"出错了！",text:"所属地区不能为空",type:"error"});
+            success = false;
+            return;
+        }
+
+
+        if(success) {
+            $.ajax({
+                type: "post",
+                async: false,
+                url: '../river/updateRiver',
+                dataType: "json",
+                data: {
+                    "riverId":riverId,
+                    "riverName": riverName,
+                    "riverNo": riverNo,
+                    "lengths": lengths,
+                    "beginArea": beginArea,
+                    "endArea": endArea,
+                    "basinArea": basinArea,
+                    "areas":areas,
+                    "areaId":areaId,
+					"riverLevelIds":JSON.stringify(riverData)
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status + "1");
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        swal({title: "success", text: "保存成功", type: "success"}, function () {
+                            window.history.back();
+                        });
+                    } else {
+                        swal({title: "Error", text: "保存失败", type: "error"}, function () {
+                            window.location.reload();
+                        });
+                    }
+                }
+            });
+        }
+        return false;
+    }
+</script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/form_validate.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:19:16 GMT -->
+</html>

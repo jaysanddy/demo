@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_jqgrid.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:02 GMT -->
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>志愿者列表</title>
+    <meta name="keywords" content="用户列表"/>
+    <meta name="description" content="用户列表"/>
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+
+    <!-- jqgrid-->
+    <link href="/../css/plugins/jqgrid/ui.jqgridffe4.css?0820" rel="stylesheet">
+
+    <link href="/../css/animate.min.css" rel="stylesheet">
+    <link href="/../css/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+    <style>
+        /* Additional style to fix warning dialog position */
+
+        #alertmod_table_list_2 {
+            top: 900px !important;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>河流列表</h5>
+                </div>
+                <div class="ibox-content">
+                    <button type="button" class="btn btn-w-s btn-success" style="margin:10px 0px 20px 5px" onclick="window.location.href='../page/addRiver'">导出记录</button>
+                    <div class="jqGrid_wrapper">
+                        <table id="table_list_1"></table>
+                        <div id="pager_list_1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/../js/jquery.min.js?v=2.1.4"></script>
+<script src="/../js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/../js/plugins/peity/jquery.peity.min.js"></script>
+<script src="/../js/plugins/jqgrid/i18n/grid.locale-cnffe4.js?0820"></script>
+<script src="/../js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
+<script src="/../js/content.min.js?v=1.0.0"></script>
+<script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="../js/util/dateutil.js"></script>
+<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+<script>
+    $(document).ready(function(){
+        $.jgrid.defaults.styleUI="Bootstrap";
+        var url = "../inspectionRecord/getRecord";
+        var data  = {states:"0,3"};
+        $("#table_list_1").jqGrid(
+            {
+                url:url,
+                postData: data,
+                mtype: 'POST',
+                datatype:"JSON",
+                height:500,
+                autowidth:true,
+                shrinkToFit:true,
+                rowNum:15,
+                rowList:[15,30],
+                jsonReader: {
+                    root:"data", page:"page","total":"totalPages",records:"totalCount", repeatitems:false
+                },
+                colNames:["序号","河道名称","河道编号","标题","所属乡镇","巡河地点","初步评定","河道描述","总分","问题创建时间","问题发现人","操作"],
+                colModel:[
+                    { name: '',width:40,formatter: function (cellvalue, options, rowObject) {
+                            console.log(options);
+                            return options.rowId;
+                        }
+                    },
+                    {name:"riverName",index:"riverName",width:40},
+                    {name:"riverNo",index:"riverNo",width:40},
+                    {name:"title",index:"title",width:40},
+                    {name:"towns",index:"towns",width:40},
+                    {name:"address",index:"address",width:40},
+                    {name:"firstAssess",index:"firstAssess",width:40,
+                        formatter: function (cellvalue, options, rowObject) {
+                            switch (rowObject.firstAssess){
+                                case 0:
+                                    return "优质";
+                                case 1:
+                                    return "一般";
+                                case 2:
+                                    return "较差";
+                            }
+                        }
+                    },
+                    {name:"context",index:"context",width:40},
+                    {name:"score",index:"score",width:40,
+                        formatter: function (cellvalue, options, rowObject) {
+                            return rowObject.score+"分";
+                        }
+                    },
+                    {name:"createTime",index:"createTime",width:60,
+                        formatter: function (cellvalue, options, rowObject) {
+                            return getFormatDateByLong(rowObject.createTime,'yyyy-MM-dd')
+                        }
+                    },
+                    {name:"creator",index:"creator",width:40},
+                    {
+                        label: '启用', name: 'flag', index: 'flag', width: 45, align: 'center',
+                        formatter: function (cellvalue, options, rowObject) {
+                            return "<a style='margin-left: 10px'  onclick='onClickDeatil("+rowObject.id+','+rowObject.status+")'>编辑</a>";
+                        }
+                    }
+                ],
+                pager:"#pager_list_1",
+                viewrecords:true,
+//                caption:"jqGrid 示例1",
+                hidegrid:false
+            });
+        $(window).bind("resize",function(){
+            var width=$(".jqGrid_wrapper").width();
+            $("#table_list_1").setGridWidth(width);
+            $("#table_list_2").setGridWidth(width)
+        })
+    });
+
+    function onClickDeatil(id,status) {
+//        window.open("../page/volUserEdit?volId="+id);
+        if(status == 0){
+            window.location.href="../page/riverRecordList?recordId="+id;
+        }else if(status == 3){
+            window.location.href="../page/riverRecheckList?recordId="+id;
+        }
+    };
+
+</script>
+</body>
+
+
+<!-- Mirrored from www.zi-han.net/theme/hplus/table_jqgrid.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:02 GMT -->
+</html>

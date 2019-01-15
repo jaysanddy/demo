@@ -1,0 +1,37 @@
+package com.vk.util;
+
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by weijin on 2018/7/4.
+ */
+public class BigLinkageUtil {
+    @Value("${project.wjUrl}")
+    public static String wjUrl;
+
+    public static void sendBigLink(String urlRequest,String address, String describe, String realName, String phone, String lat, String lng, String time, String code, String imagesUrl,
+                                   String codeNum, String areaRemark){
+        try {
+            Map<String, Object> requestMap = new HashMap<>();
+            requestMap.put("address", address);
+            requestMap.put("describe", describe);
+            requestMap.put("realName", realName);
+            requestMap.put("phone", phone);
+            requestMap.put("lat", lat);
+            requestMap.put("lng", lng);
+            requestMap.put("time", time);
+            requestMap.put("code", code);
+            requestMap.put("imagesUrl", imagesUrl);
+            requestMap.put("codeNum", codeNum);
+            requestMap.put("areaRemark", areaRemark);
+
+            String para = GsonUtil.getGson().toJson(requestMap);
+            String result = HttpUtil.getPostData(wjUrl+urlRequest, "requestMap=" + para);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}

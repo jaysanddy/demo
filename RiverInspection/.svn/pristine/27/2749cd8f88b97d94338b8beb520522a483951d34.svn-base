@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vk.mapper.InspectionResultMapper" >
+  <resultMap id="BaseResultMap" type="com.vk.model.InspectionResult" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="reform_id" property="reformId" jdbcType="INTEGER" />
+    <result column="settle_case" property="settleCase" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="images" property="images" jdbcType="VARCHAR" />
+    <result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.vk.model.InspectionResult" extends="BaseResultMap" >
+    <result column="result" property="result" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, reform_id, settle_case, content, images, deal_time, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    result
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from vk_inspection_result
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vk_inspection_result
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vk.model.InspectionResult" >
+    insert into vk_inspection_result (id, reform_id, settle_case, 
+      content, images, deal_time, 
+      create_time, result)
+    values (#{id,jdbcType=INTEGER}, #{reformId,jdbcType=INTEGER}, #{settleCase,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{images,jdbcType=VARCHAR}, #{dealTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{result,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vk.model.InspectionResult" >
+    insert into vk_inspection_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="reformId != null" >
+        reform_id,
+      </if>
+      <if test="settleCase != null" >
+        settle_case,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="images != null" >
+        images,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reformId != null" >
+        #{reformId,jdbcType=INTEGER},
+      </if>
+      <if test="settleCase != null" >
+        #{settleCase,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vk.model.InspectionResult" >
+    update vk_inspection_result
+    <set >
+      <if test="reformId != null" >
+        reform_id = #{reformId,jdbcType=INTEGER},
+      </if>
+      <if test="settleCase != null" >
+        settle_case = #{settleCase,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.vk.model.InspectionResult" >
+    update vk_inspection_result
+    set reform_id = #{reformId,jdbcType=INTEGER},
+      settle_case = #{settleCase,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      images = #{images,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      result = #{result,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vk.model.InspectionResult" >
+    update vk_inspection_result
+    set reform_id = #{reformId,jdbcType=INTEGER},
+      settle_case = #{settleCase,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      images = #{images,jdbcType=VARCHAR},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

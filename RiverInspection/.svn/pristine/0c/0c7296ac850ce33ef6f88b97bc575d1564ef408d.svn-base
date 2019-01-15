@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="renderer" content="webkit" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=0,uc-fitscreen=yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="format-detection" content="telephone=no" />
+		<title>问题上传</title>
+    <link rel="stylesheet" type="text/css" href="../css/miniMobile.css"/>
+    <script type="text/javascript" src="../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../js/miniMobile.js"></script>
+    <link rel="stylesheet" type="text/css" href="../plugins/mobileSelect/mobileSelect.css">
+    <script src="../plugins/mobileSelect/mobileSelect.js" type="text/javascript"></script>
+    <script src="../plugins/icheck/icheck.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../plugins/noUiSlider.10.0.0/nouislider.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="../plugins/switchery/switchery.css"/>
+    <script src="../plugins/switchery/switchery.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="../plugins/layer_mobile/layer.js"></script>
+    <link rel="stylesheet" type="text/css" href="../plugins/fonticon/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+        <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=aGf0sLjv7DOonc61fINdATGez2d3O8xB"></script>
+    <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=wwz42MgLZ6vWNKqvGR109ZEcCTiOfggd"></script>-->
+  </head>
+  <body class="pb12 fadeIn animated">
+  <div class="load">
+      <img src="../img/timg.gif">
+  </div>
+    <div class="content pad-top">
+        <div class="top">
+            <a onclick="javascript:history.go(-1)"><img src="../img/back.png" alt=""></a>
+            问题上传
+        </div>
+      <form class="upload">
+        <div class="list">
+          <div class="item">
+            标题
+            <input id="title" type="text" class="form-control" placeholder="请填写标题"/>
+          </div>
+          <div class="item">
+            河道名称
+            <div id="selectBox" class="form-control" style="display: inline-block;"><span>请选择河道名称</span></div>
+          </div>
+          <div class="item">
+            所属编号
+            <input id="num" type="button" class="form-control" placeholder="河道编号"/>
+              <input id="riverId" type="hidden"/>
+          </div>
+          <div class="item">
+            所属乡镇
+            <input id="adr" type="text" class="form-control" placeholder="所属乡镇" disabled=""/>
+            
+          </div>
+          <div class="item-map">
+            <img class="icon-dw" src="../img/icon-dw-b.png">
+            <span class="text-gray" id="baiduMap">请选择当前位置</span>
+            <input id="lat" type="hidden" value="">
+            <input id="lng" type="hidden" value="">
+          </div>
+            <!--<iframe id="mapPage" width="100%" height="300px" frameborder=0 src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp" allow="geolocation *;">-->
+            <!--</iframe>-->
+            <div class="rever-map" style="width:100%;height:150px;float:left">
+                <div id="allmap" style="width: 100%;height: 150px"></div>
+            </div>
+            <script>
+//                window.addEventListener('message', function(event) {
+//                    // 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
+//                    var loc = event.data;
+//                    if (loc && loc.module == 'locationPicker') {//防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+//                        console.log('location', loc);
+//                        $("#baiduMap").text(loc.poiaddress+loc.poiname);
+//                        $("#lat").val(loc.latlng.lat);
+//                        $("#lng").val(loc.latlng.lng);
+//                    }
+//                }, false);
+//                // 百度地图API功能
+
+                var locationCount = 10;
+                var map = new BMap.Map("allmap");
+                map.enableScrollWheelZoom();
+                var point = new BMap.Point(120.617421,31.3354); //中心点
+                map.centerAndZoom(point,12); //设置中心点，缩放层级
+                function addMarker(point,name){
+                    var marker = new BMap.Marker(point);
+                    var label = new BMap.Label(name, {
+                        offset : new BMap.Size(20, -10)
+                    });
+                    marker.setOffset(new BMap.Size(8, 10));
+//                    marker.setLabel(label);
+                    map.addOverlay(marker);
+                    map.centerAndZoom(point,17);
+                }
+                startLocation();
+                function startLocation() {
+                    JiGuang.startLocation();
+                }
+                function locationResult(latitude,longitude,desc) {
+                    if(latitude.indexOf("4.9E")>0){
+                        $("#baiduMap").text('定位失败！');
+                    }else {
+                        var point = new BMap.Point(longitude,latitude); //中心点
+                        addMarker(point);
+                        getAddress(latitude,longitude);
+                        if(locationCount-- > 0){//多次定位
+                            JiGuang.stopLocation();
+                        }
+                    }
+                }
+            function getAddress(latitude,longitude) {
+                $.ajax({
+                    type : 'get',
+                    url : 'http://api.map.baidu.com/geocoder/v2/?output=json&ak=aGf0sLjv7DOonc61fINdATGez2d3O8xB&location='+latitude+','+longitude,
+                    dataType:'jsonp',
+                    //                        dataType:'json',
+                    success : function(data, textStatus) {
+                        console.log(data);
+                        if(data.status == 0){
+                            var address = data.result.formatted_address;
+                            $("#baiduMap").text(address);
+                        }else {
+                            //                                alert("系统错误，请联系管理员！")
+                        }
+                    },
+                    error : function(err) {
+                        console.log(err);
+                    }
+                });
+            }
+            </script>
+          <div class="clear"></div>
+        </div>
+
+        <div class="list">
+          <div class="item">
+            <p>河道评定：</p>
+            <ul class="river-pd">
+              <li class="active"><input type="hidden" value="0">优质</li>
+              <li><input type="hidden" value="1">一般</li>
+              <li><input type="hidden" value="2">较差</li>
+            </ul>
+          </div>
+          <div class="item no-border">
+            河道描述：
+            <textarea id="des" class="form-control-text" placeholder="备注内容" required></textarea>
+          </div>
+          <div class="clear"></div>
+        </div>
+
+        <div class="list">
+          <div class="item no-border">
+            <p>现场照片：</p>
+            <ul class="add-img">
+              <li><input id="imgUpload" type="file"></li>
+            </ul>
+          </div>
+          <div class="clear"></div>
+        </div>
+        <p class="bg-gray">选择河湖问题</p>
+        <div class="list">
+          <dl class="o-h">
+            <dt><span>|</span>河面清洁<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+            <dd>
+             <div class="item">
+              <p>请选择河面清洁问题 <input id="firstId1" type="hidden"></p>
+              <ul class="river-qj toggle" id="addLengthOne">
+
+              </ul>
+            </div>
+            <div class="item no-border" style="display: none">
+               <p>填写说明</p>
+               <textarea id="des1" class="form-control-text" placeholder="备注内容"></textarea>
+            </div>
+            <div class="add-sm">
+               <img src="../img/add-circle.png">
+               添加说明
+            </div>
+            </dd>
+          </dl>
+          <div class="clear"></div>
+        </div>
+        <div class="list">
+          <dl class="o-h">
+            <dt><span>|</span>河岸整齐<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+            <dd>
+             <div class="item">
+              <p>请选择河岸整齐问题<input id="firstId2" type="hidden"></p>
+              <ul class="river-qj toggle" id="addLengthTwo">
+
+              </ul>
+            </div>
+            <div class="item no-border" style="display: none">
+               <p>填写说明</p>
+               <textarea id="des2" class="form-control-text" placeholder="备注内容"></textarea>
+            </div>
+            <div class="add-sm">
+               <img src="../img/add-circle.png">
+               添加说明
+            </div>
+            </dd>
+          </dl>
+          <div class="clear"></div>
+        </div>
+        <div class="list">
+          <dl class="o-h">
+            <dt><span>|</span>河道通畅<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+            <dd>
+             <div class="item">
+              <p>请选择河道通畅问题<input id="firstId3" type="hidden"></p>
+              <ul class="river-qj toggle" id="addLengthThree">
+
+              </ul>
+            </div>
+            <div class="item no-border" style="display: none">
+               <p>填写说明</p>
+               <textarea id="des3" class="form-control-text" placeholder="备注内容"></textarea>
+            </div>
+            <div class="add-sm">
+               <img src="../img/add-circle.png">
+               添加说明
+            </div>
+            </dd>
+          </dl>
+          <div class="clear"></div>
+        </div>
+        <div class="list">
+          <dl class="o-h">
+            <dt><span>|</span>河道水质<i class="right pr1 icon iconfont icon-unfold"></i></dt>
+            <dd>
+             <div class="item">
+              <p>请选择河道水质问题<input id="firstId4" type="hidden"></p>
+              <ul class="river-qj toggle" id="addLengthFour">
+
+              </ul>
+            </div>
+            <div class="item no-border" style="display: none">
+               <p>填写说明</p>
+               <textarea id="des4" class="form-control-text" placeholder="备注内容"></textarea>
+            </div>
+            <div class="add-sm">
+               <img src="../img/add-circle.png">
+               添加说明
+            </div>
+            </dd>
+          </dl>
+          <div class="clear"></div>
+        </div>
+        <p class="bg-gray">河道分数统计</p>
+        <div class="list">
+          <dl class="o-h">
+            <dt><span>|</span>河道总分 <b class="right green" id="score">100</b></dt>
+            <dt><span>|</span>是否需要整改
+                <div class="right check-box">
+                  <input type="checkbox" class="js-switch" checked/>
+                </div>
+            </dt>
+          </dl>
+          <div class="clear"></div>
+        </div>
+
+        <div class="list">
+            <input type="button" class="btn-primary" value="提交问题" />
+        </div>
+      </form>
+    </div>
+    <!-- 增加说明 -->
+    <div class="add-des">
+      <input id="addDesIpt" type="text">
+      <a class="add-dex-btn">完成</a>
+      <input id="desLength" type="hidden" value="">
+    </div>
+    <div class="add-des-layer"></div>
+    <input type="hidden" id="areaId" th:value="${areaId}">
+  </body>
+  <script type="text/javascript" src="../js/uploadData.js"></script>
+</html>

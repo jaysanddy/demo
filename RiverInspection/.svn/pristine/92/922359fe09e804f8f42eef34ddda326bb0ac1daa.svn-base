@@ -1,0 +1,115 @@
+package com.vk.service.impl;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.vk.mapper.JointRiverLevelMapper;
+import com.vk.mapper.RiverMapper;
+import com.vk.model.JointRiverLevelKey;
+import com.vk.model.River;
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+import com.vk.service.RiverService;
+import com.vk.util.TextUtil;
+import org.omg.CORBA.INTERNAL;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by weijin on 2018/6/21.
+ */
+@Service
+public class RiverServiceImpl implements RiverService {
+    @Resource
+    private RiverMapper riverMapper;
+    @Resource
+    private JointRiverLevelMapper jointRiverLevelMapper;
+
+    @Transactional
+    @Override
+    public Result createRiver(String riverName, Double lengths, String beginArea, String endArea, String basinArea, String remark, String areas, Integer areaId, String riverLevelIds,String riverNo)throws  Exception {
+        Result result = new Result(ResultData.FAILED,null,"插入失败");
+        try{
+            River river = new River();
+            if(TextUtil.isNotEmpty(riverName)){
+                river.setRiverName(riverName);
+            }
+            if(lengths != null && lengths.toString() != ""){
+                river.setLengths(lengths);
+            }
+            if(TextUtil.isNotEmpty(beginArea)){
+                river.setBeginArea(beginArea);
+            }
+            if(TextUtil.isNotEmpty(endArea)){
+                river.setEndArea(endArea);
+            }
+            if(TextUtil.isNotEmpty(basinArea)){
+                river.setBasinArea(basinArea);
+            }
+            if(TextUtil.isNotEmpty(remark)){
+                river.setRemark(remark);
+            }
+            if(TextUtil.isNotEmpty(areas)){
+                river.setAreas(areas);
+            }
+            if(TextUtil.integerNotEmpty(areaId)){
+                river.setAreaId(areaId);
+            }
+            if(TextUtil.isNotEmpty(riverNo)){
+                river.setRiverNo(riverNo);
+            }
+            river.setCreateTime(new Date());
+            Integer ok = riverMapper.insertSelective(river);
+            if(ok > 0){
+               String Ids[] = riverLevelIds.split(",");
+               for(String id:Ids){
+                   JointRiverLevelKey jointRiverLevelKey = new JointRiverLevelKey();
+                   jointRiverLevelKey.setRiverId(river.getId());
+                   jointRiverLevelKey.setLevelId(Integer.valueOf(id));
+
+                   jointRiverLevelMapper.insertSelective(jointRiverLevelKey);
+               }
+               result.setMsg("添加成功");
+               result.setCode(Result.SUCCESS);
+            }else{
+                result.setMsg("添加失败");
+            }
+        }catch (Exception e){
+            throw new RuntimeException("",e.getCause());
+        }
+        return result;
+    }
+
+    @Override
+    public ResultData getRivers(String riverName, Integer areaId, Integer riverLevelId,Integer pageNum,Integer pageSize) {
+        ResultData resultData = new ResultData(ResultData.FAILED,null,"查询失败");
+        try{
+            Page page = PageHelper.startPage(pageNum,pageSize,true);
+            List<River> list = riverMapper.getByteRivers(riverName, areaId, riverLevelId);
+            Long total = page.getTotal();
+            Integer pages = page.getPages();
+            ResultData dataResult = new ResultData(ResultData.SUCCESS,pageNum,total,pages,list,"查询成功");
+            return dataResult;
+        }catch (Exception e){
+            e.printStackTrace();
+            return resultData;
+        }
+    }
+
+    @Override
+    public ResultData getRiversByApp(String riverName, Integer areaId, Integer riverLevelId) {
+        ResultData resultData = new ResultData(ResultData.FAILED,null,"查询失败");
+        try {
+            List<River> list = riverMapper.getByteRivers(riverName, areaId, riverLevelId);
+            ResultData dataResult = new ResultData(ResultData.SUCCESS,null,null,null,list,"查询成功");
+            return dataResult;
+        }catch (Exception e){
+            e.printStackTrace();
+            return resultData;
+        }
+    }
+}

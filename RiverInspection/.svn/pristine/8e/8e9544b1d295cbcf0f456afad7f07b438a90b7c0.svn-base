@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>问题统计</title>
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/pandyle.min.js"></script>
+    <style>
+
+
+        th {
+            background: linear-gradient(to bottom, #f4fbff, #cdf1ff);
+            height: 18px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: auto;
+        }
+
+        th,
+        td {
+            border: 1px solid #8ba3b9;
+            font-size: 12px;
+            padding: 5px 0;
+            text-align: center;
+        }
+
+        tbody>tr:last-child {
+            font-weight: bold;
+        }
+
+        table tr:nth-child(odd){
+            background-color: #f9fdff;
+        }
+    </style>
+</head>
+
+<body>
+<table>
+    <thead>
+    <p style="text-align: center;font-weight: bold;">全市河道巡查问题情况统计表2015-11-19至2018-07-04</p>
+    <tr>
+        <th colspan="1">区县</th>
+        <th colspan="1">巡查数(条)</th>
+        <th colspan="1">需整改数(条)</th>
+        <th colspan="1">巡查整改率(%)</th>
+        <th colspan="1">已整改数(条)</th>
+        <th colspan="1">已整改率(%)</th>
+        <th colspan="1">扣分</th>
+
+    </tr>
+    </thead>
+    <tbody p-each="areas">
+    <tr>
+        <td>{{areaName}}</td>
+        <td>{{total}}</td>
+        <td>{{al}}</td>
+        <td>{{alp}}</td>
+        <td>{{fal}}</td>
+        <td>{{falp}}</td>
+        <td>{{score}}</td>
+    </tr>
+    </tbody>
+</table>
+<!-- 1、total 总数 2、nal 无需整改数量 3、al 整改数量 4、alp 整改率 5、fal 已整改数量 6、已整改率-->
+<script>
+    var data = {
+        areas: [{
+            areaName: '张家港市',
+            total: 347,
+            al: 12,
+            alp: 567,
+            fal: 32,
+            falp: 6,
+            score: 78
+        }, {
+            name: '常熟市',
+            hmqj_1: 32,
+            hmqj_2: 456,
+            hmqj_3: 325,
+            hmqj_4: 11,
+            hazq_1: 35,
+            hazq_2: 67
+
+        }, {
+            name: '太仓市',
+            hmqj_1: 432,
+            hmqj_2: 67,
+            hmqj_3: 901,
+            hmqj_4: 43,
+            hazq_1: 678,
+            hazq_2: 34
+        }, {
+            name: '昆山市',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '吴江区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '吴中区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '相城区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '工业园区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '高新区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78
+        }, {
+            name: '姑苏区',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, {
+            name: '合计',
+            hmqj_1: 347,
+            hmqj_2: 12,
+            hmqj_3: 567,
+            hmqj_4: 32,
+            hazq_1: 6,
+            hazq_2: 78,
+            hazq_3: 145,
+            hazq_4: 98,
+            hdtc_1: 11,
+            hdtc_2: 27
+        }, ]
+    };
+//    $('table').vm(data);
+
+    getAreaStats();
+    function getAreaStats() {
+        $.ajax({
+            type:"post",
+            url:"../stats/getAreaStats",
+            dataType : "json",
+            data : {
+
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+
+            },
+            success : function(result) {
+                 if(result.code==200){
+                     var data = '{"areas": '+JSON.stringify(result.data)+'}';
+                     $('table').vm(jQuery.parseJSON(data));
+                 }else {
+
+                 }
+            }
+
+        });
+    }
+</script>
+</body>
+
+</html>

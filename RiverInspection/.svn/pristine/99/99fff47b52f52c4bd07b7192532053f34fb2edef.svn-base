@@ -1,0 +1,19 @@
+package com.vk.mapper;
+
+import com.vk.model.InspectionResult;
+
+public interface InspectionResultMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(InspectionResult record);
+
+    int insertSelective(InspectionResult record);
+
+    InspectionResult selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(InspectionResult record);
+
+    int updateByPrimaryKeyWithBLOBs(InspectionResult record);
+
+    int updateByPrimaryKey(InspectionResult record);
+}

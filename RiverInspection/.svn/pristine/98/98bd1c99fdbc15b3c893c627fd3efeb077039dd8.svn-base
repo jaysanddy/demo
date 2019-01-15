@@ -1,0 +1,26 @@
+package com.vk.controller;
+
+import com.vk.response.Result;
+import com.vk.service.UserService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+/**
+ * Created by wj on 18-5-11.
+ */
+@RestController
+@RequestMapping("user")
+public class UserController {
+
+    @Resource
+    private UserService userService;
+
+    @RequestMapping("updatePassword")
+    public Result updatePassword(@RequestParam Integer userId,@RequestParam String oldPassword,@RequestParam String newPassword){
+        return userService.updatePassword(userId,oldPassword,newPassword);
+    }
+
+}

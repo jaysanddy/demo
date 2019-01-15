@@ -1,0 +1,23 @@
+package com.vk.util;
+
+import org.springframework.beans.factory.annotation.Value;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by weijin on 2018/7/4.
+ */
+public class BigLinkageUtil {
+
+    public static void sendBigLink(String urlRequest,String address, String describe, String realName, String phone, String lat, String lng, String time, String code, String imagesUrl,
+                                   String codeNum, String areaRemark){
+        try {
+            String result = HttpUtil.getPostData(urlRequest, "address="+"dsadaewq"+"&describe="+describe+"&realName="+realName
+            +"&phone="+phone+"&lat="+lat+"&lng="+lng+"&time="+time+"&code="+code+"&imagesUrl="+imagesUrl+"&codeNum="+codeNum+"&areaRemark="+areaRemark
+            );
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}

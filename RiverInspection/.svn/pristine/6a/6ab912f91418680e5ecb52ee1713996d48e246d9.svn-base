@@ -1,0 +1,17 @@
+package com.vk.service;
+
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+
+/**
+ * Created by weijin on 2018/6/21.
+ */
+public interface RiverService {
+
+    //创建河流
+    Result createRiver(String riverName,Double lengths,String beginArea,String endArea,String basinArea,String remark,String areas,Integer areaId,String riverLevelIds,String riverNo);
+
+    //获取河流
+    ResultData getRivers(String riverName,Integer areaId,Integer riverLevelId,Integer pageNum,Integer pageSize);
+
+}

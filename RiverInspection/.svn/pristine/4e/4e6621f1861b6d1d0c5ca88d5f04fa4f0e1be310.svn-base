@@ -1,0 +1,66 @@
+package com.vk.model;
+
+import java.util.Date;
+import java.util.List;
+
+public class InspectionReuslt {
+    private Integer id;
+
+    private Integer recordId;
+
+    private String context;
+
+    private Date createTime;
+
+    private Integer status;
+
+    private List<InspectionReusltFile> files;
+
+    public List<InspectionReusltFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<InspectionReusltFile> files) {
+        this.files = files;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getRecordId() {
+        return recordId;
+    }
+
+    public void setRecordId(Integer recordId) {
+        this.recordId = recordId;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context == null ? null : context.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+}

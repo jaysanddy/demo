@@ -1,0 +1,17 @@
+package com.vk.mapper;
+
+import com.vk.model.InspectionRecord;
+
+public interface InspectionRecordMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(InspectionRecord record);
+
+    int insertSelective(InspectionRecord record);
+
+    InspectionRecord selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(InspectionRecord record);
+
+    int updateByPrimaryKey(InspectionRecord record);
+}

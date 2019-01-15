@@ -1,0 +1,11 @@
+package com.vk.service;
+
+import com.vk.response.Result;
+import org.omg.CORBA.INTERNAL;
+
+/**
+ * Created by weijin on 2018/6/28.
+ */
+public interface InspectionReusltService {
+    public Result insertResult(Integer recordId,String context,String img,Integer status)throws Exception;
+}

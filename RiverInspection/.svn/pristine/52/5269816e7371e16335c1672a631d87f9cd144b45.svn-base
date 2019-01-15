@@ -1,0 +1,19 @@
+package com.vk.mapper;
+
+import com.vk.model.InspectionReusltFile;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface InspectionReusltFileMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(InspectionReusltFile record);
+
+    int insertSelective(InspectionReusltFile record);
+
+    InspectionReusltFile selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(InspectionReusltFile record);
+
+    int updateByPrimaryKey(InspectionReusltFile record);
+}

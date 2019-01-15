@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=aGf0sLjv7DOonc61fINdATGez2d3O8xB"></script>
+<style>
+    html,body,.map{
+        height:100%;
+        width:100%;
+    }
+    .map-status{
+        position: fixed;
+        top:30px;
+        right:30px;z-index: 9;
+    }
+    .map-status>div img{
+        float:left;
+        width:20px;
+        height:20px;
+        margin-right:15px;
+        margin-top:3px;
+    }
+    .cc66{
+        color:#3db965;
+       }
+    .ff9900{
+        color:#ff342e;
+    }
+</style>
+<body>
+<div class="map">
+    <div class="map-status">
+        <div class="cc66">
+            <img src="../img/map_right.png" alt="">
+            正常
+        </div>
+        <div class="ff9900">
+            <img src="../img/map_error.png" alt="">
+            整改
+        </div>
+    </div>
+<div id="allmap" style="width: 100%;height: 100%;"></div>
+</div>
+
+<script type="text/javascript">
+    // 百度地图API功能
+
+    var map = new BMap.Map("allmap");
+    map.enableScrollWheelZoom();
+    var point = new BMap.Point(120.617421,31.3354); //中心点
+    map.centerAndZoom(point,12); //设置中心点，缩放层级
+    function addMarker(recordId,point,status){
+        var marker = new BMap.Marker(point);
+        var label = new BMap.Label(name, {
+            offset : new BMap.Size(20, -10)
+        });
+        if(status=='0'){
+            var myIcon=new BMap.Icon('../img/map_error.png',new BMap.Size(40,50));
+        }else{
+            var myIcon=new BMap.Icon('../img/map_right.png',new BMap.Size(40,50));
+        }
+        marker.setIcon(myIcon);
+        marker.setOffset(new BMap.Size(8, 10));
+//        marker.setLabel(label);
+        addClickHandler(recordId,marker);
+        map.addOverlay(marker);
+    }
+    function addClickHandler(recordId,marker) {
+        marker.addEventListener('click',function(e){
+            console.log(recordId);
+            console.log(e);
+        });
+    }
+    getRecordLocation();
+    function getRecordLocation() {
+        $.ajax({
+            type:"get",
+            url:"../inspectionRecord/getRecordLocations",
+            dataType : "json",
+            data : {
+
+            },
+            error : function(XMLHttpRequest, textStatus, errorThrown) {
+
+            },
+            success : function(result) {
+                var list = result.data;
+                if(list==null||list.length==0){
+                    return;
+                }
+                for(var i=0;i<list.length;i++){
+                    addMarker(list[i].id,new BMap.Point(list[i].lng,list[i].lat),list[i].status);
+                }
+            }
+
+        });
+    }
+</script>
+</body>
+</html>

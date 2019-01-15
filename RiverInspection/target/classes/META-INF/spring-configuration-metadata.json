@@ -1,0 +1,17 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.vk.request.Project",
+      "name": "project",
+      "type": "com.vk.request.Project"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.vk.request.Project",
+      "name": "project.upload-file-path",
+      "type": "java.lang.String"
+    }
+  ]
+}

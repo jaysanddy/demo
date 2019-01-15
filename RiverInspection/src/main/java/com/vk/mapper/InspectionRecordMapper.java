@@ -1,0 +1,39 @@
+package com.vk.mapper;
+
+import com.vk.model.InspectionRecord;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
+
+@Repository
+public interface InspectionRecordMapper {
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(InspectionRecord record);
+
+    int insertSelective(InspectionRecord record);
+
+    InspectionRecord selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(InspectionRecord record);
+
+    int updateByPrimaryKey(InspectionRecord record);
+
+    List<InspectionRecord> getRecord(InspectionRecord record);
+
+    InspectionRecord getRecordById(InspectionRecord record);
+
+    Integer getRecordCount(InspectionRecord record);
+
+    InspectionRecord getByCodeOrTaskId(@Param(value = "code")String code,@Param(value = "taskId") String taskId);
+
+    public List<Map<String,Object>> getAreaStats(@Param(value = "beginTime")String beginTime, @Param(value = "endTime")String endTime, @Param(value = "riverLevelId")Integer riverLevelId);
+
+    public List<Map<String,Object>> getTotalStats(@Param(value = "beginTime")String beginTime, @Param(value = "endTime")String endTime, @Param(value = "riverLevelId")Integer riverLevelId);
+
+    public List<Map<String,Object>> getRecordLocations(@Param(value = "areaId")Integer areaId,@Param(value = "beginTime")String beginTime,@Param(value = "endTime")String endTime);
+
+}

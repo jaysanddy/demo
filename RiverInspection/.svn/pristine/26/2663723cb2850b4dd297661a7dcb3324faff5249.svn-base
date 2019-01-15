@@ -1,0 +1,145 @@
+package com.vk.controller;
+
+
+
+import com.vk.model.User;
+import com.vk.response.ResultData;
+import com.vk.security.UserDetail;
+import com.vk.service.RiverService;
+import com.vk.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+
+/**
+ * Created by wj on 18-4-18.
+ */
+@Controller
+@RequestMapping(value = "page")
+public class PageController {
+    @Resource
+    private UserService userService;
+    @Resource
+    private RiverService riverService;
+
+    //巡查员创建问题
+    @RequestMapping("createRecord")
+    public String createRecord(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("areaId",userDetail.getAreaId());
+        return "inspection_mobile/create_record.html";
+    }
+
+    @RequestMapping("recordList")
+    public String recordList(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userId",userDetail.getId());
+        return "inspection_mobile/record_list.html";
+    }
+
+    @RequestMapping("inspectionIndex")
+    public String inspectionIndex(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userId",userDetail.getId());
+        return "inspection_mobile/index.html";
+    }
+
+    @RequestMapping("recordDetail")
+    public String recordDetail(HttpServletRequest request,Integer recordId ){
+        request.setAttribute("recordId",recordId);
+        return "inspection_mobile/record_detail.html";
+    }
+
+    @RequestMapping("recheckDetail")
+    public String recheckDetail(HttpServletRequest request,Integer recordId ){
+        request.setAttribute("recordId",recordId);
+        return "inspection_mobile/recheck_detail.html";
+    }
+
+    //APP管理员
+    @RequestMapping("adminIndex")
+    public String adminIndex(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userId",userDetail.getId());
+        return  "admin/mobile/index";
+    }
+
+    @RequestMapping("problemLog")
+    public String problemLog(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userId",userDetail.getId());
+        return  "admin/mobile/problem_log";
+    }
+
+    @RequestMapping("troubleshooting")
+    public String troubleshooting(HttpServletRequest request){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("userId",userDetail.getId());
+        return  "admin/mobile/troubleshooting";
+    }
+
+    @RequestMapping("problemDetail")
+    public String problemDetail(HttpServletRequest request,Integer recordId){
+        UserDetail userDetail = (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        request.setAttribute("recordId",recordId);
+        return  "admin/mobile/problem_detail";
+    }
+
+    @RequestMapping("problemRecheckDetail")
+    public String problemRecheckDetail(HttpServletRequest request,Integer resultId,Integer recordId){
+        request.setAttribute("resultId",resultId);
+        request.setAttribute("recordId",recordId);
+        return  "admin/mobile/problem_recheck_detail";
+    }
+
+
+    //后台
+
+    @RequestMapping("userManager")
+    public String userMangager(){
+        return "admin_super/user_manager";
+    }
+
+    @RequestMapping("addUser")
+    public String addUser(){
+        return "admin_super/user_add";
+    }
+
+    @RequestMapping("editUser")
+    public String editUser(HttpServletRequest request,Integer userId){
+        ResultData resultData = userService.getUserByUserId(userId);
+        request.setAttribute("user",resultData.getData());
+        return "admin_super/user_edit";
+    }
+
+    @RequestMapping("riverManager")
+    public String riverManager(){
+        return "admin_super/river_manager";
+    }
+
+    @RequestMapping("addRiver")
+    public String addRiver(){
+        return "admin_super/river_add";
+    }
+
+    @RequestMapping("editRiver")
+    public String editRiver(HttpServletRequest request,Integer riverId){
+        ResultData resultData = riverService.getRiverById(riverId,null,null,null);
+        request.setAttribute("river",resultData.getData());
+        return "admin_super/river_edit";
+    }
+
+    @RequestMapping("riverRecordManager")
+    public String riverRecordManager(){
+        return "admin/back/river_record_manager";
+    }
+
+    @RequestMapping("riverRecordResultManager")
+    public String riverRecordResultManager(){
+        return "admin/back/river_record_result_manager";
+    }
+}

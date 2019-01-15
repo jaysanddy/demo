@@ -1,0 +1,78 @@
+package com.vk.controller;
+
+import com.vk.response.Result;
+import com.vk.response.ResultData;
+import com.vk.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+/**
+ * Created by wj on 18-5-11.
+ */
+@RestController
+@RequestMapping("user")
+@Api(tags="后台用户接口")
+public class UserController {
+
+    @Resource
+    private UserService userService;
+
+    /**
+     * 修改密码
+     * @param userId
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @ApiOperation(value="修改密码", notes="根据url的userId来修改密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "Integer", paramType = "path"),
+            @ApiImplicitParam(name = "oldPassword", value = "旧的密码", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "newPassword", value = "新的密码", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = "updatePassword", method = RequestMethod.POST)
+    public Result updatePassword(@RequestParam Integer userId,@RequestParam String oldPassword,@RequestParam String newPassword){
+        return userService.updatePassword(userId,oldPassword,newPassword);
+    }
+
+    //创建用户
+    @ApiOperation(value="创建用户", notes="后台的用户创建")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "用户ID", required = true, dataType = "Integer", paramType = "path"),
+            @ApiImplicitParam(name = "realName", value = "真实姓名", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "remark", value = "备注", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "areaId", value = "地区id", required = true, dataType = "Integer", paramType = "path")
+    })
+    @RequestMapping(value = "createUser", method = RequestMethod.POST)
+    public Result createUser(@RequestParam String name, @RequestParam String realName, @RequestParam String password, String remark, @RequestParam Integer areaId,@RequestParam Integer roleId){
+        return userService.createUser(name, realName, password, remark, areaId,roleId);
+    }
+
+    //获取用户列表
+    @RequestMapping("getUserByAreaId")
+    public ResultData getUserByAreaId(Integer areaId,@RequestParam(name = "page",defaultValue = "1") Integer pageNum,
+                                      @RequestParam(name = "rows",defaultValue = "10") Integer pageSize){
+        return userService.getUserByAreaId(areaId, pageNum, pageSize);
+    }
+
+    //获取单个用户的资料
+    @RequestMapping("getUserId")
+    public ResultData getUserId(@RequestParam Integer userId){
+        return userService.getUserByAreaId(userId);
+    }
+
+    //修改用户资料
+    @RequestMapping("updateUser")
+    public Result updateUser(@RequestParam Integer userId,String name,String realName,String password,String remark,Integer areaId,Integer status){
+        return userService.updateUser(userId, name, realName, password, remark, areaId, status);
+    }
+}

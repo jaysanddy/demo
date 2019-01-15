@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vk.mapper.InspectionReformMapper" >
+  <resultMap id="BaseResultMap" type="com.vk.model.InspectionReform" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="record_id" property="recordId" jdbcType="INTEGER" />
+    <result column="task_id" property="taskId" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="images" property="images" jdbcType="VARCHAR" />
+    <result column="reform_user_id" property="reformUserId" jdbcType="INTEGER" />
+    <result column="reform_user_name" property="reformUserName" jdbcType="VARCHAR" />
+    <result column="reform_time" property="reformTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, record_id, task_id, code, content, status, images, reform_user_id, reform_user_name, 
+    reform_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from vk_inspection_reform
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from vk_inspection_reform
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.vk.model.InspectionReform" >
+    insert into vk_inspection_reform (id, record_id, task_id, 
+      code, content, status, 
+      images, reform_user_id, reform_user_name, 
+      reform_time)
+    values (#{id,jdbcType=INTEGER}, #{recordId,jdbcType=INTEGER}, #{taskId,jdbcType=INTEGER}, 
+      #{code,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{images,jdbcType=VARCHAR}, #{reformUserId,jdbcType=INTEGER}, #{reformUserName,jdbcType=VARCHAR}, 
+      #{reformTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.vk.model.InspectionReform" >
+    insert into vk_inspection_reform
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="recordId != null" >
+        record_id,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="images != null" >
+        images,
+      </if>
+      <if test="reformUserId != null" >
+        reform_user_id,
+      </if>
+      <if test="reformUserName != null" >
+        reform_user_name,
+      </if>
+      <if test="reformTime != null" >
+        reform_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="recordId != null" >
+        #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="reformUserId != null" >
+        #{reformUserId,jdbcType=INTEGER},
+      </if>
+      <if test="reformUserName != null" >
+        #{reformUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="reformTime != null" >
+        #{reformTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.vk.model.InspectionReform" >
+    update vk_inspection_reform
+    <set >
+      <if test="recordId != null" >
+        record_id = #{recordId,jdbcType=INTEGER},
+      </if>
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null" >
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="reformUserId != null" >
+        reform_user_id = #{reformUserId,jdbcType=INTEGER},
+      </if>
+      <if test="reformUserName != null" >
+        reform_user_name = #{reformUserName,jdbcType=VARCHAR},
+      </if>
+      <if test="reformTime != null" >
+        reform_time = #{reformTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.vk.model.InspectionReform" >
+    update vk_inspection_reform
+    set record_id = #{recordId,jdbcType=INTEGER},
+      task_id = #{taskId,jdbcType=INTEGER},
+      code = #{code,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      images = #{images,jdbcType=VARCHAR},
+      reform_user_id = #{reformUserId,jdbcType=INTEGER},
+      reform_user_name = #{reformUserName,jdbcType=VARCHAR},
+      reform_time = #{reformTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

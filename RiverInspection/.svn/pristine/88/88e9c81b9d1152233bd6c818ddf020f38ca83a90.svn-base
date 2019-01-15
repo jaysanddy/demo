@@ -1,0 +1,19 @@
+package com.vk.mapper;
+
+import com.vk.model.InspectionFile;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface InspectionFileMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(InspectionFile record);
+
+    int insertSelective(InspectionFile record);
+
+    InspectionFile selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(InspectionFile record);
+
+    int updateByPrimaryKey(InspectionFile record);
+}

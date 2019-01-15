@@ -1,0 +1,42 @@
+package com.vk.controller;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.vk.request.DemoResult;
+import com.vk.response.Result;
+import com.vk.service.InspectionReusltService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by weijin on 2018/6/29.
+ */
+@RestController
+@RequestMapping("inspectionReuslt")
+public class InspectionReusltController {
+    @Resource
+    private InspectionReusltService inspectionReusltService;
+
+    @RequestMapping("insertResult")
+    public Result insertResult(Integer recordId, String context, String photoFiles, Integer status)throws Exception{
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<DemoResult>>(){}.getType();
+
+        List phonelist =gson.fromJson(photoFiles,new TypeToken<List<String>>(){}.getType());
+        return inspectionReusltService.insertResult(recordId, context, phonelist, status);
+    }
+
+    @RequestMapping("saveResult")
+    public Result saveResult(Integer resultId, String context, String photoFiles, Integer status)throws Exception{
+        Gson gson = new Gson();
+        Type type = new TypeToken<ArrayList<DemoResult>>(){}.getType();
+
+        List phonelist =gson.fromJson(photoFiles,new TypeToken<List<String>>(){}.getType());
+        return inspectionReusltService.saveResult(resultId, context, phonelist, status);
+    }
+}
